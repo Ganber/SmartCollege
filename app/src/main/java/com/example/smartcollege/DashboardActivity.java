@@ -12,7 +12,7 @@ public class DashboardActivity extends Activity {
     private RecyclerView.LayoutManager layoutManager;
 
     private String[] deviceListView;
-    // change to object
+    // TODO: change to object
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

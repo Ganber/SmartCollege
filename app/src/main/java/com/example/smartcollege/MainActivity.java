@@ -18,6 +18,8 @@ public class MainActivity extends Activity {
 
         mLoginButton = findViewById(R.id.button_login);
 
+        // TODO: Login logic
+
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

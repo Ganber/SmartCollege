@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.MyViewHolder> {
 
+    // TODO: change to object
     private String[] mDataset;
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -35,6 +36,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.MyViewHold
 
     @Override
     public DeviceAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        // TODO: uncomment, and add other views
 //        TextView v = (TextView) LayoutInflater.from(parent.getContext())
 //                .inflate(R.layout.device_recycle_view_item, parent, false);
 //        MyViewHolder vh = new MyViewHolder(v);
