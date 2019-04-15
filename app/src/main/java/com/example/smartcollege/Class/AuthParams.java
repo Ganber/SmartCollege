@@ -1,4 +1,4 @@
-package com.example.smartcollege;
+package com.example.smartcollege.Class;
 
 public class AuthParams {
     String password;

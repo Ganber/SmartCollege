@@ -1,4 +1,4 @@
-package com.example.smartcollege;
+package com.example.smartcollege.Class;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,5 +41,4 @@ public class BodyRequest {
     public JSONObject getJsonObject(){
         return mBody;
     }
-
 }

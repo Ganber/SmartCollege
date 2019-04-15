@@ -4,11 +4,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.example.smartcollege.Class.AuthParams;
+import com.example.smartcollege.Class.BodyRequest;
 
 import org.json.JSONObject;
 
@@ -20,8 +23,6 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.util.Iterator;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -57,26 +58,27 @@ public class MainActivity extends Activity {
                 mUsername = usernameEditText.getText().toString();
 
                 new RequestAsync().execute();
-            }
-        });
 
-        Button button = findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    JSONObject json = new JSONObject(mJSONstring);
+                // Make delay before entering next screen (the POST request is in different thread)
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            JSONObject json = new JSONObject(mJSONstring);
 
-                    if (json.getJSONObject("result").getString("success").equals("true")) {
+                            if (json.getJSONObject("result").getString("success").equals("true")) {
 
-                        // TODO: send the user token
-                        Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
-                        startActivity(intent);
-                        finish();
+                                // TODO: send the user token
+                                Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        } catch(Throwable t) {
+
+                        }
                     }
-                } catch(Throwable t) {
-
-                }
+                }, 2000);
             }
         });
     }
