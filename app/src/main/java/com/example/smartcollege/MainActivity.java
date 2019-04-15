@@ -48,8 +48,6 @@ public class MainActivity extends Activity {
         usernameEditText = findViewById(R.id.editTextUsername);
         passwordEditText = findViewById(R.id.editTextPassword);
 
-        // TODO: Login logic
-
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,8 +67,11 @@ public class MainActivity extends Activity {
 
                             if (json.getJSONObject("result").getString("success").equals("true")) {
 
-                                // TODO: send the user token
                                 Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
+
+                                TOKEN = json.getJSONObject("result").getJSONObject("authenticationDetails").getString("securityToken");
+                                intent.putExtra("TOKEN", TOKEN);
+
                                 startActivity(intent);
                                 finish();
                             }
