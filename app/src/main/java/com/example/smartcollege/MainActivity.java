@@ -45,7 +45,7 @@ public class MainActivity extends Activity {
                 mPassword = passwordEditText.getText().toString();
                 mUsername = usernameEditText.getText().toString();
 
-                new RequestAsync().execute();
+                new RequestLoginAsync().execute();
 
                 // Make delay before entering next screen (the POST request is in different thread)
                 Handler handler = new Handler();
@@ -74,7 +74,7 @@ public class MainActivity extends Activity {
         });
     }
 
-    public class RequestAsync extends AsyncTask<String,String,String> {
+    public class RequestLoginAsync extends AsyncTask<String,String,String> {
         @Override
         protected String doInBackground(String... strings) {
             try {
@@ -88,7 +88,7 @@ public class MainActivity extends Activity {
 
                 JSONObject obj = jsonBody.getJsonObject();
 
-                return new RestRequests().postRequest(API_URL, obj);
+                return new RestRequests().postRequest(API_URL, obj,null);
             } catch (Exception e) {
                 return "Exception: " + e.getMessage();
             }

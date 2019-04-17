@@ -16,12 +16,14 @@ import javax.net.ssl.HttpsURLConnection;
 public class RestRequests {
     HttpURLConnection conn;
 
-    public String postRequest(String URL, JSONObject obj) throws IOException {
+    public String postRequest(String URL, JSONObject obj, String token) throws IOException {
         URL url = new URL(URL);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setReadTimeout(20000);
         conn.setConnectTimeout(20000);
         conn.setRequestMethod("POST");
+        if(token != null)
+            conn.setRequestProperty("Authorization", "Basic "+ token);
         conn.setDoInput(true);
         conn.setDoOutput(true);
 
