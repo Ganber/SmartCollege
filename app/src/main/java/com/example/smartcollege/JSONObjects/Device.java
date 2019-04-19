@@ -1,4 +1,4 @@
-package com.example.smartcollege.Class;
+package com.example.smartcollege.JSONObjects;
 
 public class Device {
     private String mImageURI;
