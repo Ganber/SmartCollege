@@ -89,7 +89,7 @@ public class MainActivity extends Activity {
 
                 JSONObject obj = jsonBody.getJsonObject();
 
-                return new RestRequests().postRequest(API_URL, obj,null);
+                return new RestRequests().HttpRequest(API_URL, obj,null,"POST");
             } catch (Exception e) {
                 return "Exception: " + e.getMessage();
             }

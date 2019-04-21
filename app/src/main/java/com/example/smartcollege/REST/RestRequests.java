@@ -16,31 +16,32 @@ import javax.net.ssl.HttpsURLConnection;
 public class RestRequests {
     HttpURLConnection conn;
 
-    public String postRequest(String URL, JSONObject obj, String token) throws IOException {
+    public String HttpRequest(String URL, JSONObject obj, String token, String method) throws IOException {
         URL url = new URL(URL);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setReadTimeout(20000);
         conn.setConnectTimeout(20000);
-        conn.setRequestMethod("POST");
+        conn.setRequestMethod(method);
         conn.setRequestProperty("Content-Type", "application/json");
-        conn.setRequestProperty("Content-Length", "" + obj.toString().getBytes().length);
         if(token != null){
             String basicAuth = "Basic " + token;
             conn.setRequestProperty("Authorization",basicAuth);
         }
-        conn.setDoInput(true);
-        conn.setDoOutput(true);
-
-        OutputStream os = conn.getOutputStream();
-        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-        try {
-            writer.write(obj.toString());
-        } catch (Exception e) {
-            e.printStackTrace();
+        if(method != "GET") {
+            conn.setRequestProperty("Content-Length", "" + obj.toString().getBytes().length);
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
+            OutputStream os = conn.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+            try {
+                writer.write(obj.toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            writer.flush();
+            writer.close();
+            os.close();
         }
-        writer.flush();
-        writer.close();
-        os.close();
 
 
         int responseCode = conn.getResponseCode(); // To Check for 200
