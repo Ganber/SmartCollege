@@ -61,6 +61,7 @@ public class MainActivity extends Activity {
 
                                 TOKEN = json.getJSONObject("result").getJSONObject("authenticationDetails").getString("securityToken");
                                 intent.putExtra("TOKEN", TOKEN);
+                                intent.putExtra("USER_NAME", mUsername);
 
                                 startActivity(intent);
                                 finish();

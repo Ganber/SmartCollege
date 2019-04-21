@@ -22,6 +22,7 @@ import java.io.IOException;
 public class DashboardActivity extends Activity {
     private final String HOME_SERVICE_URL="https://sb.ch.amdocs.com/mobile-gateway/jsonrpc/HomeService";
     private String TOKEN;
+    private String encodingAuth;
 
 
     @Override
@@ -30,7 +31,9 @@ public class DashboardActivity extends Activity {
         setContentView(R.layout.activity_dashboard);
 
         Intent intent = getIntent();
-        TOKEN = Base64.encodeToString(intent.getStringExtra("TOKEN").getBytes(),Base64.NO_WRAP);
+        TOKEN = intent.getStringExtra("TOKEN");
+        String auth = intent.getStringExtra("USER_NAME") + ":" + TOKEN;
+        encodingAuth =new String(Base64.encode(auth.getBytes(),Base64.NO_WRAP));
         new RequestGetDeviceAsync().execute();
 
     }
@@ -48,7 +51,7 @@ public class DashboardActivity extends Activity {
                 jsonBody.setParams(params);
 
                 JSONObject obj = jsonBody.getJsonObject();
-                String response = new RestRequests().postRequest(HOME_SERVICE_URL, obj,TOKEN);
+                String response = new RestRequests().postRequest(HOME_SERVICE_URL, obj,encodingAuth);
                 Log.d("response",response);
                 return response;
             } catch (Exception e) {

@@ -22,8 +22,12 @@ public class RestRequests {
         conn.setReadTimeout(20000);
         conn.setConnectTimeout(20000);
         conn.setRequestMethod("POST");
-        if(token != null)
-            conn.setRequestProperty("Authorization", "Basic "+ token);
+        conn.setRequestProperty("Content-Type", "application/json");
+        conn.setRequestProperty("Content-Length", "" + obj.toString().getBytes().length);
+        if(token != null){
+            String basicAuth = "Basic " + token;
+            conn.setRequestProperty("Authorization",basicAuth);
+        }
         conn.setDoInput(true);
         conn.setDoOutput(true);
 
