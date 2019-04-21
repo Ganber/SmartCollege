@@ -1,5 +1,6 @@
 package com.example.smartcollege.REST;
 
+import com.example.smartcollege.HTTPMethodsEnum;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -16,18 +17,18 @@ import javax.net.ssl.HttpsURLConnection;
 public class RestRequests {
     HttpURLConnection conn;
 
-    public String HttpRequest(String URL, JSONObject obj, String token, String method) throws IOException {
+    public String HttpRequest(String URL, JSONObject obj, String token, HTTPMethodsEnum method) throws IOException {
         URL url = new URL(URL);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setReadTimeout(20000);
         conn.setConnectTimeout(20000);
-        conn.setRequestMethod(method);
+        conn.setRequestMethod(method.getMethodName());
         conn.setRequestProperty("Content-Type", "application/json");
         if(token != null){
             String basicAuth = "Basic " + token;
             conn.setRequestProperty("Authorization",basicAuth);
         }
-        if(method != "GET") {
+        if(method.getMethodName() != HTTPMethodsEnum.GET.getMethodName()) {
             conn.setRequestProperty("Content-Length", "" + obj.toString().getBytes().length);
             conn.setDoInput(true);
             conn.setDoOutput(true);

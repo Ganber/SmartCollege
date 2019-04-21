@@ -51,7 +51,7 @@ public class DashboardActivity extends Activity {
                 jsonBody.setParams(params);
 
                 JSONObject obj = jsonBody.getJsonObject();
-                String response = new RestRequests().HttpRequest(HOME_SERVICE_URL, obj,encodingAuth,"GET");
+                String response = new RestRequests().HttpRequest(HOME_SERVICE_URL, obj,encodingAuth,HTTPMethodsEnum.POST);
                 Log.d("response",response);
                 return response;
             } catch (Exception e) {
