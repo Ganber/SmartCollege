@@ -24,9 +24,14 @@ public class BodyRequest{
         JSONObject paramsObject = new JSONObject();
         try {
             for(Map.Entry<String, String> entry : params.getParams().entrySet()){
+                if(entry.getKey() == "params"){
+                    addParameter(entry.getKey(),entry.getValue());
+                }
                 paramsObject.put(entry.getKey(),entry.getValue());
             }
-            mParams.put(paramsObject);
+            if(paramsObject.length() != 0){
+                mParams.put(paramsObject);
+            }
          } catch (JSONException e) {
             e.printStackTrace();
         }

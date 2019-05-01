@@ -46,7 +46,7 @@ public class DashboardActivity extends Activity {
                 // POST Request
                 BodyRequest jsonBody = new BodyRequest();
                 jsonBody.addParameter("jsonrpc","2.0");
-                jsonBody.addParameter("method","getDeviceAttributes");
+                jsonBody.addParameter("method","getDevices");
                 DeviceParams params = new DeviceParams(156517);
                 jsonBody.setParams(params);
 
