@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.smartcollege.Enum.AmdocsMethodsEnum;
 import com.example.smartcollege.JSONObjects.AuthParams;
 import com.example.smartcollege.JSONObjects.BodyRequest;
 import com.example.smartcollege.REST.RestRequests;
@@ -84,7 +85,7 @@ public class MainActivity extends Activity {
                 BodyRequest jsonBody = new BodyRequest();
                 AuthParams params = new AuthParams(mUsername, mPassword);
                 jsonBody.addParameter("jsonrpc","2.0");
-                jsonBody.addParameter("method","authentify");
+                jsonBody.addParameter("method", AmdocsMethodsEnum.AUTHENTIFY.getMethod());
                 jsonBody.setParams(params);
 
                 JSONObject obj = jsonBody.getJsonObject();

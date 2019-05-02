@@ -8,9 +8,8 @@ import java.util.Map;
 
 public class BodyRequest{
 
-    JSONObject mBody = new JSONObject();
-    JSONArray mParams = new JSONArray();
-    Boolean mParamsAlreadySet = false;
+    private JSONObject mBody = new JSONObject();
+    private JSONArray mParams = new JSONArray();
 
     public void addParameter(String jsonKey, String jsonValue) {
         try {
@@ -23,13 +22,17 @@ public class BodyRequest{
     public void setParams(BodyParams params){
         JSONObject paramsObject = new JSONObject();
         try {
+            boolean isParamsSet = false;
             for(Map.Entry<String, String> entry : params.getParams().entrySet()){
-                if(entry.getKey() == "params"){
-                    addParameter(entry.getKey(),entry.getValue());
+                if(entry.getKey().equals("params")){
+                    mParams.put(Integer.valueOf(entry.getValue()));
+                    isParamsSet = true;
                 }
-                paramsObject.put(entry.getKey(),entry.getValue());
+                else{
+                    paramsObject.put(entry.getKey(),entry.getValue());
+                }
             }
-            if(paramsObject.length() != 0){
+            if(!isParamsSet){
                 mParams.put(paramsObject);
             }
          } catch (JSONException e) {
@@ -38,10 +41,9 @@ public class BodyRequest{
     }
 
     public JSONObject getJsonObject(){
-        if(mParams.length() != 0 && !mParamsAlreadySet){
+        if(mParams.length() != 0){
             try{
                 mBody.put("params",mParams);
-                mParamsAlreadySet = true;
             }
             catch (JSONException e) {
                 e.printStackTrace();

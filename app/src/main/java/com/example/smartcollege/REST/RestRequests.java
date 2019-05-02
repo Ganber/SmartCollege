@@ -2,7 +2,6 @@ package com.example.smartcollege.REST;
 
 import com.example.smartcollege.HTTPMethodsEnum;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;

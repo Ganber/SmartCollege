@@ -4,20 +4,17 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.smartcollege.JSONObjects.AuthParams;
+import com.example.smartcollege.Enum.AmdocsMethodsEnum;
+import com.example.smartcollege.Enum.DevicesIdsEnum;
 import com.example.smartcollege.JSONObjects.BodyRequest;
 import com.example.smartcollege.JSONObjects.DeviceParams;
 import com.example.smartcollege.REST.RestRequests;
 
 import org.json.JSONObject;
-
-import java.io.IOException;
 
 public class DashboardActivity extends Activity {
     private final String HOME_SERVICE_URL="https://sb.ch.amdocs.com/mobile-gateway/jsonrpc/HomeService";
@@ -46,8 +43,8 @@ public class DashboardActivity extends Activity {
                 // POST Request
                 BodyRequest jsonBody = new BodyRequest();
                 jsonBody.addParameter("jsonrpc","2.0");
-                jsonBody.addParameter("method","getDevices");
-                DeviceParams params = new DeviceParams(156517);
+                jsonBody.addParameter("method", AmdocsMethodsEnum.GET_DEVICES.getMethod());
+                DeviceParams params = new DeviceParams(DevicesIdsEnum.GateWay.getDeviceId());
                 jsonBody.setParams(params);
 
                 JSONObject obj = jsonBody.getJsonObject();
