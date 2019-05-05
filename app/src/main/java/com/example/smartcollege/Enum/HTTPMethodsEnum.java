@@ -1,4 +1,4 @@
-package com.example.smartcollege;
+package com.example.smartcollege.Enum;
 
 public enum HTTPMethodsEnum {
     GET("GET"),

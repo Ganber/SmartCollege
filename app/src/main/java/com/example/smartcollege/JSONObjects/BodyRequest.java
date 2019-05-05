@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
 import java.util.Map;
 
 public class BodyRequest{
@@ -23,13 +24,15 @@ public class BodyRequest{
         JSONObject paramsObject = new JSONObject();
         try {
             boolean isParamsSet = false;
-            for(Map.Entry<String, String> entry : params.getParams().entrySet()){
+            for(Map.Entry<String, List<String>> entry : params.getParams().entrySet()){
                 if(entry.getKey().equals("params")){
-                    mParams.put(Integer.valueOf(entry.getValue()));
+                    for(String value : entry.getValue()){
+                            mParams.put(value);
+                    }
                     isParamsSet = true;
                 }
                 else{
-                    paramsObject.put(entry.getKey(),entry.getValue());
+                    paramsObject.put(entry.getKey(),entry.getValue().get(0));
                 }
             }
             if(!isParamsSet){

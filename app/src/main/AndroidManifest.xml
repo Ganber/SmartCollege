@@ -13,8 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".DeviceAdapter"></activity>
-        <activity android:name=".DashboardActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".Activities.DashboardActivity" />
+        <activity android:name=".Activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

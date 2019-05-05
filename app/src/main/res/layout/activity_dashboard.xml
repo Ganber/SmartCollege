@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DashboardActivity">
+    tools:context=".Activities.DashboardActivity">
 
     <Button
         android:id="@+id/button_close_college"
@@ -15,6 +15,7 @@
         android:background="@color/colorPrimary"
         android:text="@string/close_college"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/button_events"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
@@ -27,6 +28,20 @@
         android:background="@color/colorPrimary"
         android:baselineAligned="false"
         android:text="@string/events"
+        app:layout_constraintEnd_toStartOf="@+id/button_close_college"
+        app:layout_constraintStart_toEndOf="@+id/button_Demo"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button_Demo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:background="@color/colorPrimary"
+        android:baselineAligned="false"
+        android:text="@string/Demo"
         app:layout_constraintEnd_toStartOf="@+id/button_close_college"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
