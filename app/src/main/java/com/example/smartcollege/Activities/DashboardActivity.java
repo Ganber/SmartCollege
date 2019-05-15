@@ -3,6 +3,7 @@ package com.example.smartcollege.Activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -56,14 +57,92 @@ public class DashboardActivity extends Activity implements Subject {
             @Override
             public void onClick(View v) {
                 //here we need to take the data from phone
-/*
-                List<String> deviceParams = new ArrayList<>();
-                deviceParams.add(Long.toString(DevicesIdsEnum.Camera.getDeviceId()));
-                deviceParams.add("RTMP");
+                burglaryAlarm(prefs);
+            }
+        });
+    }
 
-                DevicesRequest request = new DevicesRequest(AmdocsMethodsEnum.START_VIDEO_STREAMING,deviceParams,encodingAuth,activity);
-                request.execute();
-*/
+    private View.OnClickListener closeCollegeClick(){
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                closeCollege(prefs);
+                mCloseCollege.setOnClickListener(openCollegeClick());
+                mCloseCollege.setText("Open College");
+            }
+        };
+    }
+
+    private View.OnClickListener openCollegeClick(){
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                systemTriggered = false;
+                mCloseCollege.setOnClickListener(closeCollegeClick());
+                mCloseCollege.setText("Close College");
+            }
+        };
+    }
+
+    private void showEvents() {
+        //move to events page
+        Intent intent = new Intent(DashboardActivity.this, EventsActivity.class);
+        finish();
+        startActivity(intent);
+    }
+
+    private void burglaryAlarm(SharedPreferences prefs) {
+        //send notification
+        //take a video snapshot
+   //     takeVideoSnapshot();
+
+        //take photos snapshots
+         takePhotosSnapshots();
+
+        //save data in phone for event mode
+   //     saveEvents();
+    }
+
+    private void openCollege(){
+        systemTriggered = true;
+        Toast.makeText(this, "System is not triggered", Toast.LENGTH_SHORT).show();
+    }
+
+    private void closeCollege(SharedPreferences prefs){
+        Map<DevicesIdsEnum,List<String>> devices = new HashMap();
+        devices = setDeviceMapParams(devices,DevicesIdsEnum.MotionSensor);
+        devices = setDeviceMapParams(devices,DevicesIdsEnum.WindowContact);
+        new CloseCollege(devices,encodingAuth,prefs);
+        systemTriggered = true;
+        Toast.makeText(this, "System has been triggered", Toast.LENGTH_SHORT).show();
+        new Thread(this).start();
+    }
+
+    private void showDeviceDetails(){
+        devicesStatus.showDeviceDetails();
+        devicesStatus = null;
+    }
+
+    private void takePhotosSnapshots() {
+        Map<DevicesIdsEnum,List<String>> devices = new HashMap();
+        devices = setDeviceMapParams(devices,DevicesIdsEnum.Camera);
+        devicesStatus = getDevicesStatusResponse(devices,encodingAuth,() ->{
+            if(devicesStatus != null && devicesStatus.getDevicesResponseSize() == 3){
+                showDeviceDetails();
+            }
+        });
+    }
+
+
+    private void getDevicesStatus() {
+        Map<DevicesIdsEnum,List<String>> devices = new HashMap();
+        devices = setDeviceMapParams(devices,DevicesIdsEnum.Camera);
+        devices = setDeviceMapParams(devices,DevicesIdsEnum.MotionSensor);
+        devices = setDeviceMapParams(devices,DevicesIdsEnum.WindowContact);
+        devicesStatus = getDevicesStatusResponse(devices,encodingAuth,() ->{
+            if(devicesStatus != null && devicesStatus.getDevicesResponseSize() == 3){
+                showDeviceDetails();
             }
         });
     }
