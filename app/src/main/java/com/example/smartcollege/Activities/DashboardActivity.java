@@ -95,7 +95,7 @@ public class DashboardActivity extends Activity implements Subject {
     private void burglaryAlarm(SharedPreferences prefs) {
         //send notification
         //take a video snapshot
-   //     takeVideoSnapshot();
+         takeVideoSnapshot();
 
         //take photos snapshots
          takePhotosSnapshots();
@@ -103,6 +103,7 @@ public class DashboardActivity extends Activity implements Subject {
         //save data in phone for event mode
    //     saveEvents();
     }
+
 
     private void openCollege(){
         systemTriggered = true;
@@ -125,13 +126,13 @@ public class DashboardActivity extends Activity implements Subject {
     }
 
     private void takePhotosSnapshots() {
+        new GetImageSnapshots(DevicesIdsEnum.Camera,encodingAuth,prefs);
+    }
+
+    private void takeVideoSnapshot() {
         Map<DevicesIdsEnum,List<String>> devices = new HashMap();
         devices = setDeviceMapParams(devices,DevicesIdsEnum.Camera);
-        devicesStatus = getDevicesStatusResponse(devices,encodingAuth,() ->{
-            if(devicesStatus != null && devicesStatus.getDevicesResponseSize() == 3){
-                showDeviceDetails();
-            }
-        });
+        new StartVideoStreaming(devices,encodingAuth,prefs);
     }
 
 
