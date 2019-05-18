@@ -9,7 +9,6 @@ import com.example.smartcollege.Response.DeviceResponse;
 import com.example.smartcollege.Response.GetImageSnapshotsResponse;
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +37,9 @@ public class StartVideoStreaming implements UpdateSubject, Runnable{
 
     @Override
     public void run() {
+        for(DeviceResponse res : devicesStatus.getDevicesResponse()){
+            deviceParams.get(DevicesIdsEnum.Camera).add(res.getProtocol());
+        }
         devicesStatus.getDevicesResponse().stream()
                 .filter(value -> (int)value.getDeviceId() == DevicesIdsEnum.Camera.getDeviceId())
                 .map(value -> deviceParams.get(DevicesIdsEnum.Camera).add(value.getProtocol()));

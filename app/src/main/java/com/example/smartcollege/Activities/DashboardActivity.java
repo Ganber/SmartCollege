@@ -127,6 +127,7 @@ public class DashboardActivity extends Activity implements Subject {
 
     private void takePhotosSnapshots() {
         new GetImageSnapshots(DevicesIdsEnum.Camera,encodingAuth,prefs);
+        new StartImage(DevicesIdsEnum.Camera,encodingAuth,prefs);
     }
 
     private void takeVideoSnapshot() {

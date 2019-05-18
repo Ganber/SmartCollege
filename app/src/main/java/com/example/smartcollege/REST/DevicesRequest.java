@@ -22,7 +22,7 @@ public class DevicesRequest extends AsyncTask<String,String,String> {
 
     public DevicesRequest(AmdocsMethodsEnum deviceEnum, List<String> deviceId, String encodingAuth, Subject responseNotifier){
         this.deviceEnum = deviceEnum;
-        this.deviceParams = deviceId;
+        this.deviceParams = deviceParams;
         this.encodingAuth=encodingAuth;
         this.responseNotifier = responseNotifier;
     }
