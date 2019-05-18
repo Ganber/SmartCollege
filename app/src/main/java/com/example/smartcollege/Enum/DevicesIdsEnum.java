@@ -15,4 +15,18 @@ public enum DevicesIdsEnum {
     public int getDeviceId(){
         return deviceId;
     }
+
+    public static DevicesIdsEnum findDeviceIdEnum(int deviceId){
+        for(DevicesIdsEnum current : DevicesIdsEnum.values()){
+            if(current.deviceId == deviceId){
+                return current;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public String toString() {
+        return Integer.toString(deviceId);
+    }
 }

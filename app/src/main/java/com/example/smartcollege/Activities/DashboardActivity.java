@@ -1,35 +1,48 @@
 package com.example.smartcollege.Activities;
 
 import android.app.Activity;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.smartcollege.CloseCollege;
-import com.example.smartcollege.Enum.AmdocsMethodsEnum;
+import com.example.smartcollege.DevicesStatus;
 import com.example.smartcollege.Enum.DevicesIdsEnum;
+import com.example.smartcollege.GetImageSnapshots;
 import com.example.smartcollege.R;
-import com.example.smartcollege.REST.DevicesRequest;
+import com.example.smartcollege.Response.DeviceResponse;
 import com.example.smartcollege.Response.StartVideoStreamingResponse;
-import com.example.smartcollege.Subject;
+import com.example.smartcollege.StartImage;
+import com.example.smartcollege.StartVideoStreaming;
+import com.example.smartcollege.UpdateSubject;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-public class DashboardActivity extends Activity implements Subject {
+public class DashboardActivity extends Activity implements UpdateSubject, Runnable {
+    private final String CLOSE_COLLEGE = "Close College";
+    private final String EVENTS = "Events";
+    private boolean systemTriggered = false;
     private String TOKEN;
     private String encodingAuth;
     private Button mDemoButton;
     private Button mCloseCollege;
+    private Button mEvents;
     private Intent intent;
-    private DevicesRequest request;
+    private DevicesStatus devicesStatus;
+    private SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,17 +55,21 @@ public class DashboardActivity extends Activity implements Subject {
         encodingAuth =new String(Base64.encode(auth.getBytes(),Base64.NO_WRAP));
         mDemoButton = findViewById(R.id.button_Demo);
         mCloseCollege = findViewById(R.id.button_close_college);
+        mEvents = findViewById(R.id.button_events);
 
-        mCloseCollege.setOnClickListener(new View.OnClickListener() {
+        prefs = getSharedPreferences(CLOSE_COLLEGE,MODE_PRIVATE);
+
+        getDevicesStatus();
+
+        mEvents.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Map<DevicesIdsEnum,List<String>> devices = new HashMap();
-                devices = setDeviceMapParams(devices,DevicesIdsEnum.Camera);
-                devices = setDeviceMapParams(devices,DevicesIdsEnum.MotionSensor);
-                devices = setDeviceMapParams(devices,DevicesIdsEnum.WindowContact);
-                CloseCollege closeCollege = new CloseCollege(devices,encodingAuth);
+                showEvents();
             }
         });
+
+        mCloseCollege.setOnClickListener(closeCollegeClick());
+
         mDemoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -163,4 +180,38 @@ public class DashboardActivity extends Activity implements Subject {
 
     }
 
+    @Override
+    public void run() {
+        Set<String> devicesToFollow = prefs.getStringSet("Devices",null);
+        Map<String,String> deviceSavedStatus = new HashMap<>();
+        for(String savedDevice : devicesToFollow){
+            String[] splitArray = savedDevice.split(":");
+            deviceSavedStatus.put(splitArray[0],splitArray[1]);
+        }
+
+        while (systemTriggered){
+            for (Map.Entry<String, String> entry : deviceSavedStatus.entrySet()) {
+                Map<DevicesIdsEnum,List<String>> devices = new HashMap();
+                devices = setDeviceMapParams(devices,DevicesIdsEnum.findDeviceIdEnum(Integer.parseInt(entry.getKey())));
+                devicesStatus = getDevicesStatusResponse(devices,encodingAuth,() ->{
+                    if(devicesStatus != null && devicesStatus.getDevicesResponseSize() == 1){
+                        checkBurglary(deviceSavedStatus);
+                    }
+                });
+            }
+        }
+    }
+
+    private void checkBurglary(Map<String,String> deviceSavedStatus) {
+        for(DeviceResponse res : devicesStatus.getDevicesResponse()){
+            if(res.getStatus() != deviceSavedStatus.get(res.getProductId())){
+                //notify burglary
+            }
+        }
+    }
+
+    private DevicesStatus getDevicesStatusResponse(Map<DevicesIdsEnum, List<String>> devices, String encodingAuth, Runnable runWhenFinished) {
+        DevicesStatus devicesStatus = new DevicesStatus(devices,encodingAuth,runWhenFinished);
+        return devicesStatus;
+    }
 }
