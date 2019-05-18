@@ -1,7 +1,11 @@
 package com.example.smartcollege.JSONObjects;
 
+import java.util.List;
+
 public class DeviceParams extends BodyParams {
-    public DeviceParams(long deviceID){
-        super.addParam("params",Long.toString(deviceID));
+
+    public DeviceParams(List<String> deviceParams){
+        for(String param : deviceParams)
+            super.addParam("params",param);
     }
 }

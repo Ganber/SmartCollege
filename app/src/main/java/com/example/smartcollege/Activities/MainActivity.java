@@ -1,4 +1,4 @@
-package com.example.smartcollege;
+package com.example.smartcollege.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,8 +11,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.smartcollege.Enum.AmdocsMethodsEnum;
+import com.example.smartcollege.Enum.HTTPMethodsEnum;
 import com.example.smartcollege.JSONObjects.AuthParams;
 import com.example.smartcollege.JSONObjects.BodyRequest;
+import com.example.smartcollege.R;
 import com.example.smartcollege.REST.RestRequests;
 
 import org.json.JSONObject;
@@ -45,6 +47,8 @@ public class MainActivity extends Activity {
 
                 mPassword = passwordEditText.getText().toString();
                 mUsername = usernameEditText.getText().toString();
+                mUsername = "orangeDemo";
+                mPassword = "Password1";
 
                 new RequestLoginAsync().execute();
 
@@ -90,7 +94,7 @@ public class MainActivity extends Activity {
 
                 JSONObject obj = jsonBody.getJsonObject();
 
-                return new RestRequests().HttpRequest(API_URL, obj,null,HTTPMethodsEnum.POST);
+                return new RestRequests().HttpRequest(API_URL, obj,null, HTTPMethodsEnum.POST);
             } catch (Exception e) {
                 return "Exception: " + e.getMessage();
             }

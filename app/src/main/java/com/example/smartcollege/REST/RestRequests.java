@@ -1,6 +1,8 @@
 package com.example.smartcollege.REST;
 
-import com.example.smartcollege.HTTPMethodsEnum;
+import android.util.Log;
+
+import com.example.smartcollege.Enum.HTTPMethodsEnum;
 import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -54,6 +56,7 @@ public class RestRequests {
                 sb.append(line);
                 break;
             }
+            Log.d("res",sb.toString());
             in.close();
             return sb.toString();
         }
