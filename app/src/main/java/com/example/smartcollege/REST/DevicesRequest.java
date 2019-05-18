@@ -7,7 +7,7 @@ import com.example.smartcollege.Enum.AmdocsMethodsEnum;
 import com.example.smartcollege.Enum.HTTPMethodsEnum;
 import com.example.smartcollege.JSONObjects.BodyRequest;
 import com.example.smartcollege.JSONObjects.DeviceParams;
-import com.example.smartcollege.Subject;
+import com.example.smartcollege.UpdateSubject;
 
 import org.json.JSONObject;
 
@@ -17,10 +17,10 @@ public class DevicesRequest extends AsyncTask<String,String,String> {
     private AmdocsMethodsEnum deviceEnum;
     private List<String> deviceParams;
     private String encodingAuth;
-    private Subject responseNotifier;
+    private UpdateSubject responseNotifier;
     private final String HOME_SERVICE_URL="https://sb.ch.amdocs.com/mobile-gateway/jsonrpc/HomeService";
 
-    public DevicesRequest(AmdocsMethodsEnum deviceEnum, List<String> deviceId, String encodingAuth, Subject responseNotifier){
+    public DevicesRequest(AmdocsMethodsEnum deviceEnum, List<String> deviceParams, String encodingAuth, UpdateSubject responseNotifier){
         this.deviceEnum = deviceEnum;
         this.deviceParams = deviceParams;
         this.encodingAuth=encodingAuth;

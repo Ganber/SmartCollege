@@ -1,5 +1,5 @@
 package com.example.smartcollege;
 
-public interface Subject {
+public interface UpdateSubject {
     void update(String res);
 }
