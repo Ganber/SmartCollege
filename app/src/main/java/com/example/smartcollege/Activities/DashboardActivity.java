@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +20,7 @@ import com.example.smartcollege.DevicesStatus;
 import com.example.smartcollege.Enum.DevicesIdsEnum;
 import com.example.smartcollege.GetImageSnapshots;
 import com.example.smartcollege.R;
+import com.example.smartcollege.RecyclerViewAdapter;
 import com.example.smartcollege.Response.DeviceResponse;
 import com.example.smartcollege.Response.StartVideoStreamingResponse;
 import com.example.smartcollege.StartImage;
@@ -44,6 +47,17 @@ public class DashboardActivity extends Activity implements UpdateSubject, Runnab
     private DevicesStatus devicesStatus;
     private SharedPreferences prefs;
 
+    // RecyclerView
+    private RecyclerView mRecyclerView;
+    private RecyclerViewAdapter mRecyclerViewAdapter;
+    private ArrayList<String> mDevicesNames = new ArrayList<>();
+    private ArrayList<String> mDevicesImages = new ArrayList<>();
+    private ArrayList<String> mDevicesIDs = new ArrayList<>();
+    private ArrayList<String> mDevicesStatus = new ArrayList<>();
+    private ArrayList<String> mDevicesRoom = new ArrayList<>();
+    private ArrayList<String> mDevicesType = new ArrayList<>();
+    private ArrayList<String> mDevicesIsActive = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         final DashboardActivity activity = this;
@@ -60,6 +74,12 @@ public class DashboardActivity extends Activity implements UpdateSubject, Runnab
         prefs = getSharedPreferences(CLOSE_COLLEGE,MODE_PRIVATE);
 
         getDevicesStatus();
+        // getDevicesInfo();
+
+//        mRecyclerView = findViewById(R.id.recyclerView);
+//        mRecyclerViewAdapter = new RecyclerViewAdapter(mDevicesNames, mDevicesImages, mDevicesIDs, mDevicesStatus, mDevicesRoom, mDevicesType, mDevicesIsActive, this);
+//        mRecyclerView.setAdapter(mRecyclerViewAdapter);
+//        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         mEvents.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -177,7 +197,6 @@ public class DashboardActivity extends Activity implements UpdateSubject, Runnab
         Gson json = new Gson();
         StartVideoStreamingResponse r = json.fromJson(res,StartVideoStreamingResponse.class);
         Log.d("r",r.getStreamUrl());
-
     }
 
     @Override
@@ -213,5 +232,22 @@ public class DashboardActivity extends Activity implements UpdateSubject, Runnab
     private DevicesStatus getDevicesStatusResponse(Map<DevicesIdsEnum, List<String>> devices, String encodingAuth, Runnable runWhenFinished) {
         DevicesStatus devicesStatus = new DevicesStatus(devices,encodingAuth,runWhenFinished);
         return devicesStatus;
+    }
+
+    private void getDevicesInfo() {
+
+        String tempID = "0";
+
+        for(DeviceResponse device : devicesStatus.getDevicesResponse()) {
+
+            mDevicesIDs.add(tempID);
+            mDevicesImages.add("https://i.redd.it/tpsnoz5bzo501.jpg");
+
+            mDevicesNames.add(device.getName());
+            mDevicesIsActive.add(device.isActive() ? "ACTIVE" : "NOT ACTIVE");
+            mDevicesStatus.add(device.getStatus());
+            mDevicesType.add(device.getType());
+            mDevicesRoom.add(device.getRoom());
+        }
     }
 }

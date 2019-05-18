@@ -9,8 +9,8 @@
 
         <ImageView
             android:id="@+id/imageViewDevice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_gravity="center_vertical"
             android:contentDescription="@string/device_image"
             tools:layout_editor_absoluteX="16dp"
@@ -18,29 +18,57 @@
             tools:srcCompat="@tools:sample/avatars" />
 
         <TextView
-            android:id="@+id/textViewName"
+            android:id="@+id/textViewID"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="8dp"
             android:layout_weight="1"
-            android:text="@string/name" />
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:text="@string/id" />
 
         <TextView
-            android:id="@+id/textViewID"
+            android:id="@+id/textViewName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:text="@string/id" />
+            android:text="@string/name" />
 
         <TextView
             android:id="@+id/textViewStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:text="@string/status" />
+
+        <TextView
+            android:id="@+id/textViewRoom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="@string/room" />
+
+        <TextView
+            android:id="@+id/textViewType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="@string/type" />
+
+        <TextView
+            android:id="@+id/textViewIsActive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
-            android:text="@string/status" />
+            android:text="@string/isactive" />
 
 </LinearLayout>
