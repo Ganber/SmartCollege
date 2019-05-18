@@ -2,13 +2,13 @@ package com.example.smartcollege.Activities;
 
 import android.app.Activity;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +20,7 @@ import com.example.smartcollege.DevicesStatus;
 import com.example.smartcollege.Enum.DevicesIdsEnum;
 import com.example.smartcollege.GetImageSnapshots;
 import com.example.smartcollege.R;
+import com.example.smartcollege.RecyclerViewAdapter;
 import com.example.smartcollege.Response.DeviceResponse;
 import com.example.smartcollege.Response.StartVideoStreamingResponse;
 import com.example.smartcollege.StartImage;
@@ -46,6 +47,17 @@ public class DashboardActivity extends Activity implements UpdateSubject, Runnab
     private DevicesStatus devicesStatus;
     private SharedPreferences prefs;
 
+    // RecyclerView
+    private RecyclerView mRecyclerView;
+    private RecyclerViewAdapter mRecyclerViewAdapter;
+    private ArrayList<String> mDevicesNames = new ArrayList<>();
+    private ArrayList<String> mDevicesImages = new ArrayList<>();
+    private ArrayList<String> mDevicesIDs = new ArrayList<>();
+    private ArrayList<String> mDevicesStatus = new ArrayList<>();
+    private ArrayList<String> mDevicesRoom = new ArrayList<>();
+    private ArrayList<String> mDevicesType = new ArrayList<>();
+    private ArrayList<String> mDevicesIsActive = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         final DashboardActivity activity = this;
@@ -62,6 +74,10 @@ public class DashboardActivity extends Activity implements UpdateSubject, Runnab
         prefs = getSharedPreferences(CLOSE_COLLEGE,MODE_PRIVATE);
 
         getDevicesStatus();
+         //getDevicesInfo();
+
+        mRecyclerView = findViewById(R.id.recyclerView);
+
 
         mEvents.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -114,10 +130,10 @@ public class DashboardActivity extends Activity implements UpdateSubject, Runnab
     private void burglaryAlarm(SharedPreferences prefs) {
         //send notification
         //take a video snapshot
-//         takeVideoSnapshot();
-        setNotification();
+         takeVideoSnapshot();
+
         //take photos snapshots
-//         takePhotosSnapshots();
+         takePhotosSnapshots();
 
         //save data in phone for event mode
    //     saveEvents();
@@ -141,6 +157,7 @@ public class DashboardActivity extends Activity implements UpdateSubject, Runnab
 
     private void showDeviceDetails(){
         devicesStatus.showDeviceDetails();
+        getDevicesInfo();
         devicesStatus = null;
     }
 
@@ -179,7 +196,6 @@ public class DashboardActivity extends Activity implements UpdateSubject, Runnab
         Gson json = new Gson();
         StartVideoStreamingResponse r = json.fromJson(res,StartVideoStreamingResponse.class);
         Log.d("r",r.getStreamUrl());
-
     }
 
     @Override
@@ -212,28 +228,29 @@ public class DashboardActivity extends Activity implements UpdateSubject, Runnab
         }
     }
 
-    private void setNotification(){
-        // Create an explicit intent for an Activity in your app
-        Intent intent = new Intent(this, EventsActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this.getApplicationContext(), "notify_001")
-                .setSmallIcon(R.mipmap.ic_launcher_round)
-                .setContentTitle("My notification")
-                .setContentText("Hello World!")
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                // Set the intent that will fire when the user taps the notification
-                .setContentIntent(pendingIntent)
-                .setAutoCancel(true);
-
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        // notificationId is a unique int for each notification that you must define
-        notificationManager.notify(0, builder.build());
-    }
-
     private DevicesStatus getDevicesStatusResponse(Map<DevicesIdsEnum, List<String>> devices, String encodingAuth, Runnable runWhenFinished) {
         DevicesStatus devicesStatus = new DevicesStatus(devices,encodingAuth,runWhenFinished);
         return devicesStatus;
+    }
+
+    private void getDevicesInfo() {
+
+        String tempID = "0";
+
+        for(DeviceResponse device : devicesStatus.getDevicesResponse()) {
+
+            mDevicesIDs.add(tempID);
+            mDevicesImages.add("https://i.redd.it/tpsnoz5bzo501.jpg");
+
+            mDevicesNames.add(device.getName());
+            mDevicesIsActive.add(device.isActive() ? "ACTIVE" : "NOT ACTIVE");
+            mDevicesStatus.add(device.getStatus());
+            mDevicesType.add(device.getType());
+            mDevicesRoom.add(device.getRoom());
+        }
+
+        mRecyclerViewAdapter = new RecyclerViewAdapter(mDevicesNames, mDevicesImages, mDevicesIDs, mDevicesStatus, mDevicesRoom, mDevicesType, mDevicesIsActive, this);
+        mRecyclerView.setAdapter(mRecyclerViewAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 }
