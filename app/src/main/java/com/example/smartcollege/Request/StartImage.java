@@ -1,4 +1,4 @@
-package com.example.smartcollege;
+package com.example.smartcollege.Request;
 
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -7,12 +7,13 @@ import com.example.smartcollege.Enum.AmdocsMethodsEnum;
 import com.example.smartcollege.Enum.DevicesIdsEnum;
 import com.example.smartcollege.REST.DevicesRequest;
 import com.example.smartcollege.Response.StartImageResponse;
+import com.example.smartcollege.UpdateSubject;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class StartImage implements UpdateSubject{
+public class StartImage implements UpdateSubject {
     private DevicesIdsEnum cameraId;
     private String encodingAuth;
     private SharedPreferences prefs;

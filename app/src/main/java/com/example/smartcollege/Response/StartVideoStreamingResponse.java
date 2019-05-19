@@ -32,11 +32,16 @@ public class StartVideoStreamingResponse {
         return result.audioPort;
     }
 
+    public String getStreamFlspUrl() {
+        return result.streamFlspUrl;
+    }
+
     public class Response{
         private String streamId;
         private String videoServerIp;
         private String streamUrl;
         private String streamRtspUrl;
+        private String streamFlspUrl;
         private String streamHlsUrl;
         private int videoPort;
         private int audioPort;

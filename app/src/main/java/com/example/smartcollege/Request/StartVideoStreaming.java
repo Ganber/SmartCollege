@@ -1,14 +1,14 @@
-package com.example.smartcollege;
+package com.example.smartcollege.Request;
 
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.example.smartcollege.DevicesStatus;
 import com.example.smartcollege.Enum.AmdocsMethodsEnum;
 import com.example.smartcollege.Enum.DevicesIdsEnum;
 import com.example.smartcollege.REST.DevicesRequest;
-import com.example.smartcollege.Response.DeviceResponse;
-import com.example.smartcollege.Response.GetImageSnapshotsResponse;
 import com.example.smartcollege.Response.StartVideoStreamingResponse;
+import com.example.smartcollege.UpdateSubject;
 import com.google.gson.Gson;
 
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package com.example.smartcollege;
+package com.example.smartcollege.Request;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -13,6 +13,7 @@ import com.example.smartcollege.REST.DevicesRequest;
 import com.example.smartcollege.REST.RestRequests;
 import com.example.smartcollege.Response.DeviceResponse;
 import com.example.smartcollege.Response.GetImageSnapshotsResponse;
+import com.example.smartcollege.UpdateSubject;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
@@ -25,7 +26,7 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetImageSnapshots implements UpdateSubject{
+public class GetImageSnapshots implements UpdateSubject {
     private static final String FILE = "Omer";
     private DevicesIdsEnum cameraId;
     private String encodingAuth;

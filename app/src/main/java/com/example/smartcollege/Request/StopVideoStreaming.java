@@ -1,12 +1,15 @@
-package com.example.smartcollege;
+package com.example.smartcollege.Request;
 
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.example.smartcollege.DevicesStatus;
 import com.example.smartcollege.Enum.AmdocsMethodsEnum;
 import com.example.smartcollege.Enum.DevicesIdsEnum;
 import com.example.smartcollege.REST.DevicesRequest;
 import com.example.smartcollege.Response.StartVideoStreamingResponse;
+import com.example.smartcollege.UpdateSubject;
+import com.example.smartcollege.VideoSession;
 import com.google.gson.Gson;
 
 import java.util.HashMap;
@@ -42,13 +45,18 @@ public class StopVideoStreaming implements UpdateSubject, Runnable{
 
     @Override
     public void run() {
-        deviceParams.get(DevicesIdsEnum.Camera).add(res.getStreamId());
+        /*deviceParams.get(DevicesIdsEnum.Camera).add(res.getStreamId());
         deviceParams.get(DevicesIdsEnum.Camera).add(res.getVideoServerIp());
         deviceParams.get(DevicesIdsEnum.Camera).add(res.getStreamUrl());
         deviceParams.get(DevicesIdsEnum.Camera).add(res.getStreamRtspUrl());
         deviceParams.get(DevicesIdsEnum.Camera).add(res.getStreamHlsUrl());
         deviceParams.get(DevicesIdsEnum.Camera).add(Integer.toString(res.getVideoPort()));
-        deviceParams.get(DevicesIdsEnum.Camera).add(Integer.toString(res.getAudioPort()));
+        deviceParams.get(DevicesIdsEnum.Camera).add(Integer.toString(res.getAudioPort()));*/
+        VideoSession videoSession = new VideoSession(res.getStreamId(), res.getVideoServerIp(), res.getStreamUrl(), res.getStreamRtspUrl(),
+                res.getStreamFlspUrl(), res.getStreamHlsUrl(), res.getVideoPort(), res.getAudioPort());
+        Gson gson = new Gson();
+        String jsonInString = gson.toJson(videoSession);
+        deviceParams.get(DevicesIdsEnum.Camera).add(jsonInString);
         DevicesRequest request = new DevicesRequest(AmdocsMethodsEnum.STOP_VIDEO_STREAMING, deviceParams.get(DevicesIdsEnum.Camera), encodingAuth, this);
         request.execute();
     }

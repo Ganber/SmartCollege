@@ -1,6 +1,10 @@
 package com.example.smartcollege.Activities;
 
 import android.app.Activity;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -17,13 +21,13 @@ import android.widget.Toast;
 import com.example.smartcollege.CloseCollege;
 import com.example.smartcollege.DevicesStatus;
 import com.example.smartcollege.Enum.DevicesIdsEnum;
-import com.example.smartcollege.GetImageSnapshots;
+import com.example.smartcollege.Request.GetImageSnapshots;
 import com.example.smartcollege.R;
 import com.example.smartcollege.RecyclerViewAdapter;
 import com.example.smartcollege.Response.DeviceResponse;
 import com.example.smartcollege.Response.StartVideoStreamingResponse;
-import com.example.smartcollege.StartImage;
-import com.example.smartcollege.StartVideoStreaming;
+import com.example.smartcollege.Request.StartImage;
+import com.example.smartcollege.Request.StartVideoStreaming;
 import com.example.smartcollege.UpdateSubject;
 import com.google.gson.Gson;
 
@@ -129,13 +133,36 @@ public class DashboardActivity extends Activity implements UpdateSubject, Runnab
     private void burglaryAlarm(SharedPreferences prefs) {
         //send notification
         //take a video snapshot
-         takeVideoSnapshot();
+        //showNotification();
+
+        takeVideoSnapshot();
 
         //take photos snapshots
-         takePhotosSnapshots();
+        takePhotosSnapshots();
 
         //save data in phone for event mode
    //     saveEvents();
+    }
+
+    void showNotification() {
+        NotificationManager mNotificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("YOUR_CHANNEL_ID",
+                    "YOUR_CHANNEL_NAME",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription("YOUR_NOTIFICATION_CHANNEL_DISCRIPTION");
+            mNotificationManager.createNotificationChannel(channel);
+        }
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), "YOUR_CHANNEL_ID")
+                .setSmallIcon(R.drawable.ic_stat_ac_unit) // notification icon
+                .setContentTitle("My notification") // title for notification
+                .setContentText("Hello World!")// message for notification
+                .setAutoCancel(true); // clear notification after click
+        Intent intent = new Intent(getApplicationContext(), EventsActivity.class);
+        PendingIntent pi = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        mBuilder.setContentIntent(pi);
+        mNotificationManager.notify(0, mBuilder.build());
     }
 
 
