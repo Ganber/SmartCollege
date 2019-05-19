@@ -1,6 +1,7 @@
 package com.example.smartcollege;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,15 +17,15 @@ import java.util.ArrayList;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
 
     private ArrayList<String> mNames = new ArrayList<>();
-    private ArrayList<String> mImages = new ArrayList<>();
-    private ArrayList<String> mIDs = new ArrayList<>();
+    private ArrayList<Integer> mImages = new ArrayList<>();
+    private ArrayList<Long> mIDs = new ArrayList<>();
     private ArrayList<String> mStatus = new ArrayList<>();
     private ArrayList<String> mRoom = new ArrayList<>();
     private ArrayList<String> mType = new ArrayList<>();
     private ArrayList<String> mIsActive = new ArrayList<>();
     private Context mContext;
 
-    public RecyclerViewAdapter(ArrayList<String> mNames, ArrayList<String> mImages, ArrayList<String> mIDs, ArrayList<String> mStatus, ArrayList<String> mRoom, ArrayList<String> mType, ArrayList<String> mIsActive, Context mContext) {
+    public RecyclerViewAdapter(ArrayList<String> mNames, ArrayList<Integer> mImages, ArrayList<Long> mIDs, ArrayList<String> mStatus, ArrayList<String> mRoom, ArrayList<String> mType, ArrayList<String> mIsActive, Context mContext) {
         this.mNames = mNames;
         this.mImages = mImages;
         this.mIDs = mIDs;
@@ -46,17 +47,28 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
 
+//        Glide.with(mContext)
+//                .asBitmap()
+//                .load(mImages.get(i))
+//                .into(viewHolder.image);
         Glide.with(mContext)
-                .asBitmap()
                 .load(mImages.get(i))
                 .into(viewHolder.image);
 
         viewHolder.name.setText(mNames.get(i));
-        viewHolder.ID.setText(mIDs.get(i));
+        viewHolder.ID.setText(mIDs.get(i).toString());
         viewHolder.status.setText(mStatus.get(i));
         viewHolder.room.setText(mRoom.get(i));
         viewHolder.type.setText(mType.get(i));
         viewHolder.isActive.setText(mIsActive.get(i));
+
+
+        CharSequence txt = viewHolder.isActive.getText();
+        if (txt == "ACTIVE") {
+            viewHolder.isActive.setTextColor(Color.GREEN);
+        }else {
+            viewHolder.isActive.setTextColor(Color.RED);
+        }
     }
 
     @Override
