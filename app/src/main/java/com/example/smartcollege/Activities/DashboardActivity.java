@@ -1,8 +1,6 @@
 package com.example.smartcollege.Activities;
 
 import android.app.Activity;
-import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -52,8 +50,8 @@ public class DashboardActivity extends Activity implements UpdateSubject, Runnab
     private RecyclerView mRecyclerView;
     private RecyclerViewAdapter mRecyclerViewAdapter;
     private ArrayList<String> mDevicesNames = new ArrayList<>();
-    private ArrayList<String> mDevicesImages = new ArrayList<>();
-    private ArrayList<String> mDevicesIDs = new ArrayList<>();
+    private ArrayList<Integer> mDevicesImages = new ArrayList<>();
+    private ArrayList<Long> mDevicesIDs = new ArrayList<>();
     private ArrayList<String> mDevicesStatus = new ArrayList<>();
     private ArrayList<String> mDevicesRoom = new ArrayList<>();
     private ArrayList<String> mDevicesType = new ArrayList<>();
@@ -77,10 +75,8 @@ public class DashboardActivity extends Activity implements UpdateSubject, Runnab
         prefs = getSharedPreferences(CLOSE_COLLEGE,MODE_PRIVATE);
 
         getDevicesStatus();
-         //getDevicesInfo();
 
         mRecyclerView = findViewById(R.id.recyclerView);
-
 
         mEvents.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -238,13 +234,11 @@ public class DashboardActivity extends Activity implements UpdateSubject, Runnab
 
     private void getDevicesInfo() {
 
-        String tempID = "0";
-
         for(DeviceResponse device : devicesStatus.getDevicesResponse()) {
 
-            mDevicesIDs.add(tempID);
-            mDevicesImages.add("https://i.redd.it/tpsnoz5bzo501.jpg");
+            addDeviceImage(device.getType());
 
+            mDevicesIDs.add(device.getDeviceId());
             mDevicesNames.add(device.getName());
             mDevicesIsActive.add(device.isActive() ? "ACTIVE" : "NOT ACTIVE");
             mDevicesStatus.add(device.getStatus());
@@ -255,5 +249,21 @@ public class DashboardActivity extends Activity implements UpdateSubject, Runnab
         mRecyclerViewAdapter = new RecyclerViewAdapter(mDevicesNames, mDevicesImages, mDevicesIDs, mDevicesStatus, mDevicesRoom, mDevicesType, mDevicesIsActive, this);
         mRecyclerView.setAdapter(mRecyclerViewAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    private void addDeviceImage(String type) {
+
+        switch (type) {
+            case ("tyco_contact"):
+                mDevicesImages.add(R.drawable.widows_contact_img);
+                break;
+            case ("movable_cam_sercomm"):
+                mDevicesImages.add(R.drawable.security_cam_img);
+                break;
+            case ("tyco_motion"):
+                mDevicesImages.add(R.drawable.motion_sensor_img);
+                break;
+            default: break;
+        }
     }
 }
