@@ -1,31 +1,43 @@
 package com.example.smartcollege;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.example.smartcollege.Enum.AmdocsMethodsEnum;
 import com.example.smartcollege.Enum.DevicesIdsEnum;
+import com.example.smartcollege.Enum.HTTPMethodsEnum;
+import com.example.smartcollege.JSONObjects.BodyRequest;
+import com.example.smartcollege.JSONObjects.DeviceParams;
 import com.example.smartcollege.REST.DevicesRequest;
+import com.example.smartcollege.REST.RestRequests;
 import com.example.smartcollege.Response.DeviceResponse;
 import com.example.smartcollege.Response.GetImageSnapshotsResponse;
 import com.google.gson.Gson;
 
+import org.json.JSONObject;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class GetImageSnapshots implements UpdateSubject{
+    private static final String FILE = "Omer";
     private DevicesIdsEnum cameraId;
     private String encodingAuth;
     private SharedPreferences prefs;
+    private Context context;
     private List<String> deviceParams = new ArrayList<>();
 
-    public GetImageSnapshots(DevicesIdsEnum cameraId, String encodingAuth, SharedPreferences prefs) {
+    public GetImageSnapshots(Context context, DevicesIdsEnum cameraId, String encodingAuth, SharedPreferences prefs) {
         this.cameraId = cameraId;
         this.encodingAuth = encodingAuth;
         this.prefs = prefs;
+        this.context = context;
         exec();
     }
 
@@ -40,5 +52,33 @@ public class GetImageSnapshots implements UpdateSubject{
         Gson json = new Gson();
         GetImageSnapshotsResponse response = json.fromJson(res, GetImageSnapshotsResponse.class);
         Log.d("getImageSnapshots",response.getUrl());
+
+        BodyRequest jsonBody = new BodyRequest();
+        jsonBody.addParameter("jsonrpc","2.0");
+        DeviceParams params = new DeviceParams(deviceParams);
+        jsonBody.setParams(params);
+
+        JSONObject obj = jsonBody.getJsonObject();
+        try {
+            String ress = new RestRequests().HttpRequest(response.getUrl(), obj,encodingAuth, HTTPMethodsEnum.GET);
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("File1", Context.MODE_PRIVATE));
+            outputStreamWriter.write(ress);
+            outputStreamWriter.close();
+
+            String filePath = context.getFilesDir().getPath();
+            File f = new File(filePath);
+            try{
+                f.createNewFile();
+                BufferedWriter buf = new BufferedWriter(new FileWriter(f, true));
+                buf.append(ress);
+                buf.newLine();
+                buf.close();
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
