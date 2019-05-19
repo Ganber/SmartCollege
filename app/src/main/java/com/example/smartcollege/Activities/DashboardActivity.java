@@ -231,7 +231,7 @@ public class DashboardActivity extends Activity implements UpdateSubject, Runnab
     private void getDevicesInfo() {
 
         for(DeviceResponse device : devicesStatus.getDevicesResponse()) {
-            
+
             addDeviceImage(device.getType());
 
             mDevicesIDs.add(device.getDeviceId());
