@@ -7,6 +7,7 @@ public enum AmdocsMethodsEnum {
     GET_IMAGE_SNAPSHOT("getImageSnapshot"),
     START_VIDEO_STREAMING("startVideoStreaming"),
     STOP_VIDEO_STREAMING("stopVideoStreaming"),
+    GET_RECORDED_VIDEOS("getRecordedVideos"),
     START_IMAGE("startImage"),
     AUTHENTIFY("authentify");
 

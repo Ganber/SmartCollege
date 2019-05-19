@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -63,6 +64,8 @@ public class DashboardActivity extends Activity implements UpdateSubject, Runnab
         final DashboardActivity activity = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         intent = getIntent();
         TOKEN = intent.getStringExtra("TOKEN");
         String auth = intent.getStringExtra("USER_NAME") + ":" + TOKEN;
@@ -162,7 +165,7 @@ public class DashboardActivity extends Activity implements UpdateSubject, Runnab
     }
 
     private void takePhotosSnapshots() {
-        new GetImageSnapshots(DevicesIdsEnum.Camera,encodingAuth,prefs);
+        new GetImageSnapshots(getApplicationContext(),DevicesIdsEnum.Camera,encodingAuth,prefs);
         new StartImage(DevicesIdsEnum.Camera,encodingAuth,prefs);
     }
 

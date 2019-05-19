@@ -29,6 +29,8 @@ public class RestRequests {
             String basicAuth = "Basic " + token;
             conn.setRequestProperty("Authorization",basicAuth);
         }
+        conn.setDoOutput(true);
+
         if(method.getMethodName() != HTTPMethodsEnum.GET.getMethodName()) {
             conn.setRequestProperty("Content-Length", "" + obj.toString().getBytes().length);
             conn.setDoInput(true);
@@ -54,12 +56,13 @@ public class RestRequests {
             String line = "";
             while ((line = in.readLine()) != null) {
                 sb.append(line);
-                break;
             }
             Log.d("res",sb.toString());
             in.close();
             return sb.toString();
         }
+
+
         return null;
     }
 }
