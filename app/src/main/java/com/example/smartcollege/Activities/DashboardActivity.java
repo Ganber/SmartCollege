@@ -251,13 +251,13 @@ public class DashboardActivity extends Activity implements UpdateSubject, Runnab
 
         switch (type) {
             case ("tyco_contact"):
-                mDevicesImages.add(R.drawable.motion_sensor_img);
+                mDevicesImages.add(R.drawable.widows_contact_img);
                 break;
             case ("movable_cam_sercomm"):
                 mDevicesImages.add(R.drawable.security_cam_img);
                 break;
             case ("tyco_motion"):
-                mDevicesImages.add(R.drawable.widows_contact_img);
+                mDevicesImages.add(R.drawable.motion_sensor_img);
                 break;
             default: break;
         }
