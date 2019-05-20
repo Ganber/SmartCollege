@@ -10,7 +10,9 @@ import com.example.smartcollege.REST.DevicesRequest;
 import com.example.smartcollege.Response.StartVideoStreamingResponse;
 import com.example.smartcollege.UpdateSubject;
 import com.example.smartcollege.VideoSession;
+import com.example.smartcollege.VideoSessionDetails;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.util.HashMap;
 import java.util.List;
@@ -52,9 +54,12 @@ public class StopVideoStreaming implements UpdateSubject, Runnable{
         deviceParams.get(DevicesIdsEnum.Camera).add(res.getStreamHlsUrl());
         deviceParams.get(DevicesIdsEnum.Camera).add(Integer.toString(res.getVideoPort()));
         deviceParams.get(DevicesIdsEnum.Camera).add(Integer.toString(res.getAudioPort()));*/
-        VideoSession videoSession = new VideoSession(res.getStreamId(), res.getVideoServerIp(), res.getStreamUrl(), res.getStreamRtspUrl(),
+        VideoSessionDetails videoSessionDetails = new VideoSessionDetails(res.getStreamId(), res.getVideoServerIp(), res.getStreamUrl(), res.getStreamRtspUrl(),
                 res.getStreamFlspUrl(), res.getStreamHlsUrl(), res.getVideoPort(), res.getAudioPort());
-        Gson gson = new Gson();
+        VideoSession videoSession = new VideoSession(videoSessionDetails);
+        GsonBuilder builder = new GsonBuilder();
+        //Gson gson = new Gson();
+        Gson gson = builder.serializeNulls().create();
         String jsonInString = gson.toJson(videoSession);
         deviceParams.get(DevicesIdsEnum.Camera).add(jsonInString);
         DevicesRequest request = new DevicesRequest(AmdocsMethodsEnum.STOP_VIDEO_STREAMING, deviceParams.get(DevicesIdsEnum.Camera), encodingAuth, this);
