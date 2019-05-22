@@ -1,5 +1,8 @@
 package com.example.smartcollege.JSONObjects;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,7 +30,13 @@ public class BodyRequest{
             for(Map.Entry<String, List<String>> entry : params.getParams().entrySet()){
                 if(entry.getKey().equals("params")){
                     for(String value : entry.getValue()){
+                        if(value.startsWith("{") && value.endsWith("}")){
+                            JSONObject  jsonObject = new JSONObject(value);
+                            mParams.put(jsonObject);
+                        }else{
                             mParams.put(value);
+                        }
+
                     }
                     isParamsSet = true;
                 }

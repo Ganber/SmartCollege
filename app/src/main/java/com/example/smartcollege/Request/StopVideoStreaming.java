@@ -60,7 +60,7 @@ public class StopVideoStreaming implements UpdateSubject, Runnable{
         GsonBuilder builder = new GsonBuilder();
         //Gson gson = new Gson();
         Gson gson = builder.serializeNulls().create();
-        String jsonInString = gson.toJson(videoSession);
+        String jsonInString = gson.toJson(videoSessionDetails);
         deviceParams.get(DevicesIdsEnum.Camera).add(jsonInString);
         DevicesRequest request = new DevicesRequest(AmdocsMethodsEnum.STOP_VIDEO_STREAMING, deviceParams.get(DevicesIdsEnum.Camera), encodingAuth, this);
         request.execute();
