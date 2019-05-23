@@ -32,7 +32,7 @@
                     android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/textViewID"
+                            android:id="@+id/textViewEventID"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
@@ -67,7 +67,7 @@
                     android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/textViewRoom"
+                            android:id="@+id/textViewDate"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"

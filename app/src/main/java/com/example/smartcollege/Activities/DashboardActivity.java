@@ -23,7 +23,7 @@ import com.example.smartcollege.DevicesStatus;
 import com.example.smartcollege.Enum.DevicesIdsEnum;
 import com.example.smartcollege.Request.GetImageSnapshots;
 import com.example.smartcollege.R;
-import com.example.smartcollege.RecyclerViewAdapter;
+import com.example.smartcollege.Adapters.RecyclerViewAdapter;
 import com.example.smartcollege.Response.DeviceResponse;
 import com.example.smartcollege.Response.StartVideoStreamingResponse;
 import com.example.smartcollege.Request.StartImage;

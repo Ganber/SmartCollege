@@ -13,4 +13,9 @@
     <string name="room">Room</string>
     <string name="type">Type</string>
     <string name="isactive">isActive</string>
+    <string name="eventid">EventID</string>
+    <string name="date">Date</string>
+    <string name="event_id">[EVENT ID]</string>
+    <string name="event_date">[EVENT DATE]</string>
+    <string name="todo">TODO</string>
 </resources>

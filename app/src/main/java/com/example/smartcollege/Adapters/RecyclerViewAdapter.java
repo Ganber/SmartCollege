@@ -1,4 +1,4 @@
-package com.example.smartcollege;
+package com.example.smartcollege.Adapters;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.smartcollege.R;
 
 import java.util.ArrayList;
 
@@ -90,10 +91,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             super(itemView);
 
             image = itemView.findViewById(R.id.imageViewDevice);
-            ID = itemView.findViewById(R.id.textViewID);
+            ID = itemView.findViewById(R.id.textViewEventID);
             name = itemView.findViewById(R.id.textViewName);
             status = itemView.findViewById(R.id.textViewStatus);
-            room = itemView.findViewById(R.id.textViewRoom);
+            room = itemView.findViewById(R.id.textViewDate);
             type = itemView.findViewById(R.id.textViewType);
             isActive = itemView.findViewById(R.id.textViewIsActive);
         }
