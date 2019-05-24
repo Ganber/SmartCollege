@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.example.smartcollege.BitmapDecoder;
 import com.example.smartcollege.Enum.AmdocsMethodsEnum;
 import com.example.smartcollege.Enum.DevicesIdsEnum;
 import com.example.smartcollege.Enum.HTTPMethodsEnum;
@@ -23,6 +24,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,6 +55,15 @@ public class GetImageSnapshots implements UpdateSubject {
     public void update(String res) {
         Gson json = new Gson();
         GetImageSnapshotsResponse response = json.fromJson(res, GetImageSnapshotsResponse.class);
+        try {
+            String s = response.getUrl().replace("https://","http://");
+            URL url = new URL(s);
+
+            BitmapDecoder.decodeSnapshot(url,200,200,encodingAuth);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
         Log.d("getImageSnapshots",response.getUrl());
 
         BodyRequest jsonBody = new BodyRequest();
