@@ -24,6 +24,7 @@ import com.example.smartcollege.Enum.DevicesIdsEnum;
 import com.example.smartcollege.Request.GetImageSnapshots;
 import com.example.smartcollege.R;
 import com.example.smartcollege.Adapters.RecyclerViewAdapter;
+import com.example.smartcollege.Request.GetRecordedVideos;
 import com.example.smartcollege.Response.DeviceResponse;
 import com.example.smartcollege.Response.StartVideoStreamingResponse;
 import com.example.smartcollege.Request.StartImage;
@@ -136,13 +137,14 @@ public class DashboardActivity extends Activity implements UpdateSubject, Runnab
         //showNotification();
 
         takeVideoSnapshot();
-
         //take photos snapshots
         takePhotosSnapshots();
 
         //save data in phone for event mode
    //     saveEvents();
     }
+
+
 
     void showNotification() {
         NotificationManager mNotificationManager =
@@ -196,6 +198,10 @@ public class DashboardActivity extends Activity implements UpdateSubject, Runnab
         Map<DevicesIdsEnum,List<String>> devices = new HashMap();
         devices = setDeviceMapParams(devices,DevicesIdsEnum.Camera);
         new StartVideoStreaming(devices,encodingAuth,prefs);
+    }
+
+    private void getRecordedVideos() {
+        GetRecordedVideos getRecordedVideos = new GetRecordedVideos();
     }
 
 

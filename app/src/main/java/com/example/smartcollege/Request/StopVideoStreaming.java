@@ -41,24 +41,21 @@ public class StopVideoStreaming implements UpdateSubject, Runnable{
     @Override
     public void update(String res) {
         Gson json = new Gson();
-        StartVideoStreamingResponse response = json.fromJson(res, StartVideoStreamingResponse.class);
+        //StartVideoStreamingResponse response = json.fromJson(res, StartVideoStreamingResponse.class);
         Log.d("Res",res);
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        new GetRecordedVideos(encodingAuth);
     }
 
     @Override
     public void run() {
-        /*deviceParams.get(DevicesIdsEnum.Camera).add(res.getStreamId());
-        deviceParams.get(DevicesIdsEnum.Camera).add(res.getVideoServerIp());
-        deviceParams.get(DevicesIdsEnum.Camera).add(res.getStreamUrl());
-        deviceParams.get(DevicesIdsEnum.Camera).add(res.getStreamRtspUrl());
-        deviceParams.get(DevicesIdsEnum.Camera).add(res.getStreamHlsUrl());
-        deviceParams.get(DevicesIdsEnum.Camera).add(Integer.toString(res.getVideoPort()));
-        deviceParams.get(DevicesIdsEnum.Camera).add(Integer.toString(res.getAudioPort()));*/
         VideoSessionDetails videoSessionDetails = new VideoSessionDetails(res.getStreamId(), res.getVideoServerIp(), res.getStreamUrl(), res.getStreamRtspUrl(),
                 res.getStreamFlspUrl(), res.getStreamHlsUrl(), res.getVideoPort(), res.getAudioPort());
-        VideoSession videoSession = new VideoSession(videoSessionDetails);
         GsonBuilder builder = new GsonBuilder();
-        //Gson gson = new Gson();
         Gson gson = builder.serializeNulls().create();
         String jsonInString = gson.toJson(videoSessionDetails);
         deviceParams.get(DevicesIdsEnum.Camera).add(jsonInString);

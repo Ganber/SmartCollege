@@ -43,6 +43,11 @@ public class StartVideoStreaming implements UpdateSubject, Runnable{
             e.printStackTrace();
         }
         deviceParams.get(DevicesIdsEnum.Camera).remove(1);
+        try {
+            Thread.sleep(60000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         new StopVideoStreaming(response,deviceParams,encodingAuth,prefs);
     }
 
