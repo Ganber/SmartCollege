@@ -46,42 +46,40 @@ public class MainActivity extends Activity {
         usernameEditText = findViewById(R.id.editTextUsername);
         passwordEditText = findViewById(R.id.editTextPassword);
 
-        mLoginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        mLoginButton.setOnClickListener(v -> {
 
-                mPassword = passwordEditText.getText().toString();
-                mUsername = usernameEditText.getText().toString();
-                mUsername = "orangeDemo";
-                mPassword = "Password1";
+            mPassword = passwordEditText.getText().toString();
+            mUsername = usernameEditText.getText().toString();
+            //TODO: remove
+            mUsername = "orangeDemo";
+            mPassword = "Password1";
 
-                new RequestLoginAsync().execute();
+            new RequestLoginAsync().execute();
 
-                // Make delay before entering next screen (the POST request is in different thread)
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            JSONObject json = new JSONObject(mJSONstring);
+            // Make delay before entering next screen (the POST request is in different thread)
+            Handler handler = new Handler();
+            handler.postDelayed(() -> {
+                try {
+                    JSONObject json = new JSONObject(mJSONstring);
 
-                            if (json.getJSONObject("result").getString("success").equals("true")) {
+                    if (json.getJSONObject("result").getString("success").equals("true")) {
+                        Toast.makeText(getApplicationContext(), "Login Successfully", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
 
-                                Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
+                        TOKEN = json.getJSONObject("result").getJSONObject("authenticationDetails").getString("securityToken");
+                        intent.putExtra("TOKEN", TOKEN);
+                        intent.putExtra("USER_NAME", mUsername);
 
-                                TOKEN = json.getJSONObject("result").getJSONObject("authenticationDetails").getString("securityToken");
-                                intent.putExtra("TOKEN", TOKEN);
-                                intent.putExtra("USER_NAME", mUsername);
-
-                                startActivity(intent);
-                                finish();
-                            }
-                        } catch(Throwable t) {
-
-                        }
+                        startActivity(intent);
+                        finish();
                     }
-                }, 2000);
-            }
+                    else{
+                        Toast.makeText(getApplicationContext(), "Illegal Username or Password", Toast.LENGTH_LONG).show();
+                    }
+                } catch(Exception t) {
+                    Toast.makeText(getApplicationContext(), "Illegal Username or Password", Toast.LENGTH_LONG).show();
+                }
+            }, 2000);
         });
     }
 
@@ -125,7 +123,6 @@ public class MainActivity extends Activity {
         @Override
         protected void onPostExecute(String s) {
             if (s != null) {
-                Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
                 mJSONstring = s;
             }
         }

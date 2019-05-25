@@ -1,4 +1,4 @@
-package com.example.smartcollege;
+package com.example.smartcollege.Request;
 
 import java.util.Date;
 

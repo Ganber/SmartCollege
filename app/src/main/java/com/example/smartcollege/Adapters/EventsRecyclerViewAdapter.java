@@ -19,8 +19,8 @@ import java.util.ArrayList;
 
 public class EventsRecyclerViewAdapter extends RecyclerView.Adapter<EventsRecyclerViewAdapter.ViewHolder>{
 
-    private ArrayList<String> mIDs = new ArrayList<>();
-    private ArrayList<String> mDates = new ArrayList<>();
+    private ArrayList<String> mIDs;
+    private ArrayList<String> mDates;
     private int mImages;
     private Context mContext;
 
@@ -37,8 +37,7 @@ public class EventsRecyclerViewAdapter extends RecyclerView.Adapter<EventsRecycl
 
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.events_recycler_view_item, viewGroup, false);
 
-        ViewHolder holder = new ViewHolder(view);
-        return holder;
+        return new ViewHolder(view);
     }
 
     @Override

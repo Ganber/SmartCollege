@@ -18,4 +18,5 @@
     <string name="event_id">[EVENT ID]</string>
     <string name="event_date">[EVENT DATE]</string>
     <string name="todo">TODO</string>
+    <string name="open_College">Open College</string>
 </resources>

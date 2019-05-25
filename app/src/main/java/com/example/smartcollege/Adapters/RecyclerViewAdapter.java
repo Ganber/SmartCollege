@@ -17,13 +17,13 @@ import java.util.ArrayList;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
 
-    private ArrayList<String> mNames = new ArrayList<>();
-    private ArrayList<Integer> mImages = new ArrayList<>();
-    private ArrayList<Long> mIDs = new ArrayList<>();
-    private ArrayList<String> mStatus = new ArrayList<>();
-    private ArrayList<String> mRoom = new ArrayList<>();
-    private ArrayList<String> mType = new ArrayList<>();
-    private ArrayList<String> mIsActive = new ArrayList<>();
+    private ArrayList<String> mNames;
+    private ArrayList<Integer> mImages;
+    private ArrayList<Long> mIDs;
+    private ArrayList<String> mStatus;
+    private ArrayList<String> mRoom;
+    private ArrayList<String> mType;
+    private ArrayList<String> mIsActive;
     private Context mContext;
 
     public RecyclerViewAdapter(ArrayList<String> mNames, ArrayList<Integer> mImages, ArrayList<Long> mIDs, ArrayList<String> mStatus, ArrayList<String> mRoom, ArrayList<String> mType, ArrayList<String> mIsActive, Context mContext) {

@@ -36,7 +36,7 @@ public class CloseCollege implements Runnable{
             Set<String> devicesToSave = new HashSet<>();
             for(DeviceResponse device : devicesStatus.getDevicesResponse()){
                 if(device.isActive() && device.getSensorTriggerModeWhenSystemArmed().equals("ENABLED")){
-                    devicesToSave.add(Long.toString(device.getDeviceId())  + ":" + device.getStatus());
+                    devicesToSave.add(device.getDeviceId()  + ":" + device.getStatus());
                 }
             }
 

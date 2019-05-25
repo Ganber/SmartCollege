@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GetImageSnapshots implements UpdateSubject {
-    private static final String FILE = "Omer";
     private DevicesIdsEnum cameraId;
     private String encodingAuth;
     private SharedPreferences prefs;

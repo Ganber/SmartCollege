@@ -10,7 +10,6 @@ import com.example.smartcollege.REST.DevicesRequest;
 import com.example.smartcollege.Response.GetRecordedVideosResponse;
 import com.example.smartcollege.Response.StartVideoStreamingResponse;
 import com.example.smartcollege.UpdateSubject;
-import com.example.smartcollege.VideoRecordsRequest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
