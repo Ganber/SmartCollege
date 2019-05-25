@@ -7,15 +7,16 @@
 
     <application
         android:allowBackup="true"
+        android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.ShowEventActivity"></activity>
+        <activity android:name=".Activities.ShowEventActivity"/>
         <activity android:name=".Activities.EventsActivity" />
-        <activity android:name=".DeviceAdapter" />
         <activity android:name=".Activities.DashboardActivity" />
+
         <activity android:name=".Activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

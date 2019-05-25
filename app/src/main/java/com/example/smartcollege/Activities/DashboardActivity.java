@@ -97,7 +97,7 @@ public class DashboardActivity extends Activity implements Runnable {
         super.onResume();
         //refresh the display devices data every 10 seconds
         displayDevices = new DisplayDevices(this::getDevicesStatus);
-        new Thread(new DisplayDevices(displayDevices)).start();
+        new Thread(displayDevices).start();
     }
 
     private View.OnClickListener closeCollegeClick(){
