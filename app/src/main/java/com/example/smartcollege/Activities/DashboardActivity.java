@@ -128,7 +128,7 @@ public class DashboardActivity extends Activity implements Runnable {
         //take a video snapshot
         takeVideoSnapshot();
         //take photos snapshots
-        takePhotosSnapshots();
+      //  takePhotosSnapshots();
 
         //save data in phone for event mode
    //     saveEvents();

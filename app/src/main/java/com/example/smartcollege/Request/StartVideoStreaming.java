@@ -9,6 +9,7 @@ import com.example.smartcollege.Enum.DevicesIdsEnum;
 import com.example.smartcollege.REST.DevicesRequest;
 import com.example.smartcollege.Response.StartVideoStreamingResponse;
 import com.example.smartcollege.UpdateSubject;
+import com.example.smartcollege.VideoSessionDetails;
 import com.google.gson.Gson;
 
 import java.util.HashMap;
@@ -43,12 +44,11 @@ public class StartVideoStreaming implements UpdateSubject, Runnable{
             e.printStackTrace();
         }
         deviceParams.get(DevicesIdsEnum.Camera).remove(1);
-        try {
-            Thread.sleep(60000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        new StopVideoStreaming(response,deviceParams,encodingAuth,prefs);
+        VideoSessionDetails videoSessionDetails = new VideoSessionDetails(response.getStreamId(), response.getVideoServerIp(),
+                response.getStreamUrl(), response.getStreamRtspUrl(),
+                response.getStreamFlspUrl(), response.getStreamHlsUrl(),
+                response.getVideoPort(), response.getAudioPort());
+        new StartVideoRecording(videoSessionDetails, deviceParams, encodingAuth, prefs);
     }
 
     @Override

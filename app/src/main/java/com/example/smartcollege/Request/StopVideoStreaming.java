@@ -17,6 +17,7 @@ import com.google.gson.GsonBuilder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class StopVideoStreaming implements UpdateSubject, Runnable{
     private final String VIDEO_PROTOCOL="RTMP";
@@ -24,17 +25,19 @@ public class StopVideoStreaming implements UpdateSubject, Runnable{
     private SharedPreferences prefs;
     private Map<DevicesIdsEnum,List<String>> deviceParams = new HashMap<>();
     private DevicesStatus devicesStatus;
-    private StartVideoStreamingResponse res;
+    private VideoSessionDetails videoSession;
 
-    public StopVideoStreaming(StartVideoStreamingResponse res,Map<DevicesIdsEnum,List<String>> deviceParams, String encodingAuth, SharedPreferences prefs) {
+    public StopVideoStreaming(VideoSessionDetails videoSessionDetails, Map<DevicesIdsEnum,List<String>> deviceParams, String encodingAuth, SharedPreferences prefs) {
         this.deviceParams = deviceParams;
-        this.res = res;
+        this.videoSession = videoSessionDetails;
         this.encodingAuth = encodingAuth;
         this.prefs = prefs;
         exec();
     }
 
     private void exec() {
+        Objects.requireNonNull(deviceParams.get(DevicesIdsEnum.Camera)).clear();
+        deviceParams.get(DevicesIdsEnum.Camera).add(Integer.toString(DevicesIdsEnum.Camera.getDeviceId()));
         devicesStatus = new DevicesStatus(deviceParams,encodingAuth,this);
     }
 
@@ -53,11 +56,10 @@ public class StopVideoStreaming implements UpdateSubject, Runnable{
 
     @Override
     public void run() {
-        VideoSessionDetails videoSessionDetails = new VideoSessionDetails(res.getStreamId(), res.getVideoServerIp(), res.getStreamUrl(), res.getStreamRtspUrl(),
-                res.getStreamFlspUrl(), res.getStreamHlsUrl(), res.getVideoPort(), res.getAudioPort());
+
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.serializeNulls().create();
-        String jsonInString = gson.toJson(videoSessionDetails);
+        String jsonInString = gson.toJson(videoSession);
         deviceParams.get(DevicesIdsEnum.Camera).add(jsonInString);
         DevicesRequest request = new DevicesRequest(AmdocsMethodsEnum.STOP_VIDEO_STREAMING, deviceParams.get(DevicesIdsEnum.Camera), encodingAuth, this);
         request.execute();

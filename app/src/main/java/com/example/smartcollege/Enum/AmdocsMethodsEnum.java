@@ -9,6 +9,8 @@ public enum AmdocsMethodsEnum {
     STOP_VIDEO_STREAMING("stopVideoStreaming"),
     GET_RECORDED_VIDEOS("getRecordedVideos"),
     START_IMAGE("startImage"),
+    START_VIDEO_RECORDING("startVideoRecording"),
+    STOP_VIDEO_RECORDING("stopVideoRecording"),
     AUTHENTIFY("authentify");
 
     private String method;
