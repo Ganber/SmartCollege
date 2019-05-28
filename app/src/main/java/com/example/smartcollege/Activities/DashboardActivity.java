@@ -1,5 +1,6 @@
 package com.example.smartcollege.Activities;
 
+import java.util.Calendar;
 import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -38,6 +39,9 @@ import java.util.Set;
 public class DashboardActivity extends Activity implements Runnable {
     private final String CLOSE_COLLEGE = "Close College";
     private final String EVENTS = "Events";
+    private final String EVENT_ID = "Event ID";
+    private final String ID = "ID";
+    private final String DATE = "DATE";
     private final String CHANNEL_ID = "YOUR_CHANNEL_ID";
     private final String CHANNEL_NAME = "YOUR_CHANNEL_NAME";
     private final String CHANNEL_DESCRIPTION = "YOUR_NOTIFICATION_CHANNEL_DESCRIPTION";
@@ -49,7 +53,6 @@ public class DashboardActivity extends Activity implements Runnable {
     private Button mEvents;
     private Intent intent;
     private DevicesStatus devicesStatus;
-    private SharedPreferences prefs;
     private DisplayDevices displayDevices;
 
     // RecyclerView
@@ -66,6 +69,11 @@ public class DashboardActivity extends Activity implements Runnable {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferences prefs = getSharedPreferences(EVENT_ID,MODE_PRIVATE);
+        Integer amountOfHistoryEvents = prefs.getInt(ID,-1);
+        if(amountOfHistoryEvents == -1){
+            prefs.edit().putInt(ID,0).apply();
+        }
         setContentView(R.layout.activity_dashboard);
         mDemoButton = findViewById(R.id.button_Demo);
         mCloseCollege = findViewById(R.id.button_close_college);
@@ -80,7 +88,7 @@ public class DashboardActivity extends Activity implements Runnable {
         String auth = intent.getStringExtra("USER_NAME") + ":" + TOKEN;
         encodingAuth =new String(Base64.encode(auth.getBytes(),Base64.NO_WRAP));
 
-        prefs = getSharedPreferences(CLOSE_COLLEGE,MODE_PRIVATE);
+
         //set button clicks listener
         mEvents.setOnClickListener(v -> showEvents());
 
@@ -88,7 +96,7 @@ public class DashboardActivity extends Activity implements Runnable {
 
         mDemoButton.setOnClickListener(v -> {
             //TODO: here we need to take the data from phone
-            burglaryAlarm(prefs);
+            burglaryAlarm();
         });
     }
 
@@ -102,6 +110,7 @@ public class DashboardActivity extends Activity implements Runnable {
 
     private View.OnClickListener closeCollegeClick(){
         return v -> {
+            SharedPreferences prefs = getSharedPreferences(CLOSE_COLLEGE,MODE_PRIVATE);
             closeCollege(prefs);
             mCloseCollege.setOnClickListener(openCollegeClick());
             mCloseCollege.setText(R.string.open_College);
@@ -123,15 +132,27 @@ public class DashboardActivity extends Activity implements Runnable {
         startActivity(intent);
     }
 
-    private void burglaryAlarm(SharedPreferences prefs) {
+    private void burglaryAlarm() {
         burglaryNotification();
         //take a video snapshot
-        takeVideoSnapshot();
+        //takeVideoSnapshot();
         //take photos snapshots
       //  takePhotosSnapshots();
 
         //save data in phone for event mode
-   //     saveEvents();
+   //
+        saveEvents();
+    }
+
+    private void saveEvents(){
+        SharedPreferences prefs = getSharedPreferences(EVENT_ID,MODE_PRIVATE);
+        Integer currentEventId = prefs.getInt(ID,-1);
+        prefs.edit().remove(ID).apply();
+        prefs.edit().putInt(ID,currentEventId+1).apply();
+        prefs = getSharedPreferences(EVENTS+currentEventId,MODE_PRIVATE);
+        prefs.edit().putString(DATE,Calendar.getInstance().getTime().toString()).apply();
+        //saveImageURL
+        //saveVideoURL
     }
 
     private void burglaryNotification() {
@@ -171,11 +192,12 @@ public class DashboardActivity extends Activity implements Runnable {
     }
 
     private void takePhotosSnapshots() {
+        SharedPreferences prefs = getSharedPreferences(EVENTS,MODE_PRIVATE);
         new GetImageSnapshots(getApplicationContext(),DevicesIdsEnum.Camera,encodingAuth,prefs);
-        new StartImage(DevicesIdsEnum.Camera,encodingAuth,prefs);
     }
 
     private void takeVideoSnapshot() {
+        SharedPreferences prefs = getSharedPreferences(EVENTS,MODE_PRIVATE);
         Map<DevicesIdsEnum,List<String>> devices = new HashMap();
         setDeviceMapParams(devices,DevicesIdsEnum.Camera);
         new StartVideoStreaming(devices,encodingAuth,prefs);
@@ -208,30 +230,38 @@ public class DashboardActivity extends Activity implements Runnable {
 
     @Override
     public void run() {
+        SharedPreferences prefs = getSharedPreferences(CLOSE_COLLEGE,MODE_PRIVATE);
         Set<String> devicesToFollow = prefs.getStringSet("Devices",null);
-        Map<String,String> deviceSavedStatus = new HashMap<>();
+        prefs = getSharedPreferences(CLOSE_COLLEGE,MODE_PRIVATE);
+        prefs.edit().remove("Devices").apply();
+        Map<Integer,String> deviceSavedStatus = new HashMap<>();
         for(String savedDevice : devicesToFollow){
             String[] splitArray = savedDevice.split(":");
-            deviceSavedStatus.put(splitArray[0],splitArray[1]);
+            deviceSavedStatus.put(Integer.parseInt(splitArray[0]),splitArray[1]);
         }
 
         while (systemTriggered){
-            for (Map.Entry<String, String> entry : deviceSavedStatus.entrySet()) {
+            for (Map.Entry<Integer, String> entry : deviceSavedStatus.entrySet()) {
                 Map<DevicesIdsEnum,List<String>> devices = new HashMap();
-                setDeviceMapParams(devices,DevicesIdsEnum.findDeviceIdEnum(Integer.parseInt(entry.getKey())));
+                setDeviceMapParams(devices,DevicesIdsEnum.findDeviceIdEnum(entry.getKey()));
                 devicesStatus = getDevicesStatusResponse(devices,encodingAuth,() ->{
                     if(devicesStatus != null && devicesStatus.getDevicesResponseSize() == 1){
                         checkBurglary(deviceSavedStatus);
                     }
                 });
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
 
-    private void checkBurglary(Map<String,String> deviceSavedStatus) {
+    private void checkBurglary(Map<Integer,String> deviceSavedStatus) {
         for(DeviceResponse res : devicesStatus.getDevicesResponse()){
-            if(!res.getStatus().equals(deviceSavedStatus.get(res.getProductId()))){
-                burglaryAlarm(prefs);
+            if(deviceSavedStatus.containsKey((int)res.getDeviceId()) && !res.getStatus().equals(deviceSavedStatus.get((int)res.getDeviceId()))){
+                burglaryAlarm();
             }
         }
     }

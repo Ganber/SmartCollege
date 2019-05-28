@@ -13,6 +13,10 @@ import java.util.ArrayList;
 
 public class EventsActivity extends AppCompatActivity {
 
+    private final String EVENTS = "Events";
+    private final String EVENT_ID = "Event ID";
+    private final String ID = "ID";
+    private final String DATE = "DATE";
     private SharedPreferences prefs;
 
     // RecyclerView Variables
@@ -25,22 +29,21 @@ public class EventsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events);
-
-        prefs = getSharedPreferences("Events",MODE_PRIVATE);
-
-        // TODO: get events from HTTP request
         injectTempEvents();
     }
 
     private void injectTempEvents() {
-
+        prefs = getSharedPreferences(EVENT_ID,MODE_PRIVATE);
         int eventImage = R.drawable.events_icon;
-
-        mEventsID.add("Event 1");
-        mEventsID.add("Event 2");
-
-        mEventsDate.add("22/5/2019 - 14:21");
-        mEventsDate.add("23/5/2019 - 18:34");
+        Integer numberOfEvents = prefs.getInt(ID,-1);
+        for(int i = 0; i<numberOfEvents;++i){
+            prefs = getSharedPreferences(EVENTS + i,MODE_PRIVATE);
+            mEventsID.add("Event: " + (i+1));
+            String date = prefs.getString(DATE,null);
+            mEventsDate.add(date);
+            // TODO: get imageURL from prefs
+            // TODO: get videoURL from prefs
+        }
 
         mEventRecyclerView = findViewById(R.id.eventsRecyclerView);
         mEventsRecyclerViewAdapter = new EventsRecyclerViewAdapter(mEventsID, mEventsDate, eventImage, this);
