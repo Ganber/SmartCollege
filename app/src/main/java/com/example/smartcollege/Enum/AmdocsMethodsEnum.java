@@ -15,7 +15,7 @@ public enum AmdocsMethodsEnum {
 
     private String method;
 
-    private AmdocsMethodsEnum(String method){
+    AmdocsMethodsEnum(String method){
         this.method = method;
     }
 

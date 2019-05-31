@@ -27,7 +27,6 @@ import com.example.smartcollege.R;
 import com.example.smartcollege.Adapters.RecyclerViewAdapter;
 import com.example.smartcollege.Request.GetRecordedVideos;
 import com.example.smartcollege.Response.DeviceResponse;
-import com.example.smartcollege.Request.StartImage;
 import com.example.smartcollege.Request.StartVideoStreaming;
 
 import java.util.ArrayList;
@@ -70,11 +69,13 @@ public class DashboardActivity extends Activity implements Runnable {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPreferences prefs = getSharedPreferences(EVENT_ID,MODE_PRIVATE);
+        //check if there any events on phone
         Integer amountOfHistoryEvents = prefs.getInt(ID,-1);
         if(amountOfHistoryEvents == -1){
             prefs.edit().putInt(ID,0).apply();
         }
         setContentView(R.layout.activity_dashboard);
+
         mDemoButton = findViewById(R.id.button_Demo);
         mCloseCollege = findViewById(R.id.button_close_college);
         mEvents = findViewById(R.id.button_events);
@@ -87,17 +88,12 @@ public class DashboardActivity extends Activity implements Runnable {
         TOKEN = intent.getStringExtra("TOKEN");
         String auth = intent.getStringExtra("USER_NAME") + ":" + TOKEN;
         encodingAuth =new String(Base64.encode(auth.getBytes(),Base64.NO_WRAP));
-
-
         //set button clicks listener
         mEvents.setOnClickListener(v -> showEvents());
 
         mCloseCollege.setOnClickListener(closeCollegeClick());
 
-        mDemoButton.setOnClickListener(v -> {
-            //TODO: here we need to take the data from phone
-            burglaryAlarm();
-        });
+        mDemoButton.setOnClickListener(v -> burglaryAlarm());
     }
 
     @Override
@@ -137,10 +133,9 @@ public class DashboardActivity extends Activity implements Runnable {
         //take a video snapshot
         //takeVideoSnapshot();
         //take photos snapshots
-      //  takePhotosSnapshots();
+        //takePhotosSnapshots();
 
         //save data in phone for event mode
-   //
         saveEvents();
     }
 
@@ -179,14 +174,15 @@ public class DashboardActivity extends Activity implements Runnable {
     private void closeCollege(SharedPreferences prefs){
         Map<DevicesIdsEnum,List<String>> devices = new HashMap();
         setDeviceMapParams(devices,DevicesIdsEnum.MotionSensor,DevicesIdsEnum.WindowContact);
+        //save current devices status
         new CloseCollege(devices,encodingAuth,prefs);
         systemTriggered = true;
         Toast.makeText(this, "System has been triggered", Toast.LENGTH_SHORT).show();
+        //check every 10 seconds if the status was changed and alert it
         new Thread(this).start();
     }
 
     private void showDeviceDetails(){
-        devicesStatus.showDeviceDetails();
         getDevicesInfo();
         devicesStatus = null;
     }
@@ -205,6 +201,7 @@ public class DashboardActivity extends Activity implements Runnable {
 
     private void getRecordedVideos() {
         GetRecordedVideos getRecordedVideos = new GetRecordedVideos();
+        //save videos on phone
     }
 
     private void getDevicesStatus() {
@@ -224,12 +221,11 @@ public class DashboardActivity extends Activity implements Runnable {
             }
             devices.get(current).add(Integer.toString(current.getDeviceId()));
         }
-
-
     }
 
     @Override
     public void run() {
+        //get current saved devices status
         SharedPreferences prefs = getSharedPreferences(CLOSE_COLLEGE,MODE_PRIVATE);
         Set<String> devicesToFollow = prefs.getStringSet("Devices",null);
         prefs = getSharedPreferences(CLOSE_COLLEGE,MODE_PRIVATE);
@@ -239,7 +235,7 @@ public class DashboardActivity extends Activity implements Runnable {
             String[] splitArray = savedDevice.split(":");
             deviceSavedStatus.put(Integer.parseInt(splitArray[0]),splitArray[1]);
         }
-
+        //get current device status and check if the status was changed
         while (systemTriggered){
             for (Map.Entry<Integer, String> entry : deviceSavedStatus.entrySet()) {
                 Map<DevicesIdsEnum,List<String>> devices = new HashMap();
@@ -259,6 +255,7 @@ public class DashboardActivity extends Activity implements Runnable {
     }
 
     private void checkBurglary(Map<Integer,String> deviceSavedStatus) {
+        //check every 10 seconds if the status changed
         for(DeviceResponse res : devicesStatus.getDevicesResponse()){
             if(deviceSavedStatus.containsKey((int)res.getDeviceId()) && !res.getStatus().equals(deviceSavedStatus.get((int)res.getDeviceId()))){
                 burglaryAlarm();
@@ -267,8 +264,7 @@ public class DashboardActivity extends Activity implements Runnable {
     }
 
     private DevicesStatus getDevicesStatusResponse(Map<DevicesIdsEnum, List<String>> devices, String encodingAuth, Runnable runWhenFinished) {
-        DevicesStatus devicesStatus = new DevicesStatus(devices,encodingAuth,runWhenFinished);
-        return devicesStatus;
+        return new DevicesStatus(devices,encodingAuth,runWhenFinished);
     }
 
     private void getDevicesInfo() {
@@ -298,14 +294,17 @@ public class DashboardActivity extends Activity implements Runnable {
     }
 
     private void addDeviceImage(String type) {
+        final String TYCO_CONTACT = "tyco_contact";
+        final String MOVABLE_CAM_SERCOMM = "movable_cam_sercomm";
+        final String TYCO_MOTION = "tyco_motion";
         switch (type) {
-            case ("tyco_contact"):
+            case (TYCO_CONTACT):
                 mDevicesImages.add(R.drawable.widows_contact_img);
                 break;
-            case ("movable_cam_sercomm"):
+            case (MOVABLE_CAM_SERCOMM):
                 mDevicesImages.add(R.drawable.security_cam_img);
                 break;
-            case ("tyco_motion"):
+            case (TYCO_MOTION):
                 mDevicesImages.add(R.drawable.motion_sensor_img);
                 break;
             default: break;

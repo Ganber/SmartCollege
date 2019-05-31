@@ -55,6 +55,7 @@ public class GetRecordedVideos implements UpdateSubject, Runnable {
     public void update(String res) {
         Gson json = new Gson();
         GetRecordedVideosResponse response = json.fromJson(res, GetRecordedVideosResponse.class);
+        //save videos in phone
         Log.d("Res",res);
     }
 

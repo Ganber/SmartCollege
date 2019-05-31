@@ -21,6 +21,7 @@ import android.util.Log;
 
 public class BitmapDecoder
 {
+    //should give us the bitmap from image url
     private static final String LOG_TAG = BitmapDecoder.class.getSimpleName();
 
     /**

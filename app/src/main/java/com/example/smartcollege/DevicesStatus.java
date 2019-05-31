@@ -15,7 +15,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class DevicesStatus implements UpdateSubject {
-    private Object object = new Object();
     private final Map<DevicesIdsEnum,List<String>> devices;
     private Map<Long,DeviceResponse> devicesResponse = new ConcurrentHashMap<>();
     private String encodingAuth;
@@ -35,6 +34,7 @@ public class DevicesStatus implements UpdateSubject {
                 for (String param : entry.getValue()) {
                     deviceParams.add(param);
                 }
+                //send a request to get devices status
                 DevicesRequest request = new DevicesRequest(AmdocsMethodsEnum.GET_DEVICE, deviceParams, encodingAuth, this);
                 request.execute();
             }
@@ -45,6 +45,7 @@ public class DevicesStatus implements UpdateSubject {
             Gson json = new Gson();
             DeviceResponse response = json.fromJson(res, DeviceResponse.class);
             devicesResponse.put(response.getDeviceId(), response);
+            //notify that the statuses is ready
             notifier.run();
     }
 
@@ -54,17 +55,5 @@ public class DevicesStatus implements UpdateSubject {
 
     public Collection<DeviceResponse> getDevicesResponse(){
         return devicesResponse.values();
-    }
-
-    public void showDeviceDetails() {
-        for(DeviceResponse device : devicesResponse.values()){
-            Log.d("-","-----------------");
-            Log.d(device.getName(),"Is Active: "+device.isActive());
-            Log.d(device.getName(),"Status: " +device.getStatus());
-            Log.d(device.getName(),"Type:" + device.getType());
-            Log.d(device.getName(),"Room: "+device.getRoom());
-            Log.d(device.getName(),"BatteryStatus: "+ device.getBatteryStatus());
-
-        }
     }
 }

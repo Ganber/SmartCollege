@@ -1,7 +1,6 @@
 package com.example.smartcollege;
 
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import com.example.smartcollege.Enum.DevicesIdsEnum;
 import com.example.smartcollege.Response.DeviceResponse;
@@ -28,8 +27,6 @@ public class CloseCollege implements Runnable{
         devicesStatus = new DevicesStatus(devices,encodingAuth,this);
     }
 
-
-
     @Override
     public void run(){
         if(devicesStatus != null && devicesStatus.getDevicesResponseSize() == devices.size()){
@@ -39,7 +36,7 @@ public class CloseCollege implements Runnable{
                     devicesToSave.add(device.getDeviceId()  + ":" + device.getStatus());
                 }
             }
-
+            //save current devices status in phone
             prefs.edit().putStringSet("Devices",devicesToSave).apply();
         }
     }

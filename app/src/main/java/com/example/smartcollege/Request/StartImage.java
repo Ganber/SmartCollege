@@ -37,5 +37,6 @@ public class StartImage implements UpdateSubject {
         Gson json = new Gson();
         StartImageResponse response = json.fromJson(res, StartImageResponse.class);
         Log.d("getImageSnapshots",response.getImageUrl());
+        //save photo in phone
     }
 }

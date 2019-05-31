@@ -7,23 +7,19 @@ import com.example.smartcollege.DevicesStatus;
 import com.example.smartcollege.Enum.AmdocsMethodsEnum;
 import com.example.smartcollege.Enum.DevicesIdsEnum;
 import com.example.smartcollege.REST.DevicesRequest;
-import com.example.smartcollege.Response.StartVideoStreamingResponse;
 import com.example.smartcollege.UpdateSubject;
-import com.example.smartcollege.VideoSession;
 import com.example.smartcollege.VideoSessionDetails;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 public class StopVideoStreaming implements UpdateSubject, Runnable{
-    private final String VIDEO_PROTOCOL="RTMP";
     private String encodingAuth;
     private SharedPreferences prefs;
-    private Map<DevicesIdsEnum,List<String>> deviceParams = new HashMap<>();
+    private Map<DevicesIdsEnum,List<String>> deviceParams;
     private DevicesStatus devicesStatus;
     private VideoSessionDetails videoSession;
 

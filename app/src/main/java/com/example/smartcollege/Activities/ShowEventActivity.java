@@ -40,8 +40,6 @@ public class ShowEventActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        // TODO: pass to intent the video URL and get it here
-
         mEventID = intent.getStringExtra("ID");
         mEventDate = intent.getStringExtra("Date");
 
@@ -55,14 +53,12 @@ public class ShowEventActivity extends AppCompatActivity {
 
         injectTempImageEvents();
 
-        mButtonPlay.setOnClickListener(v -> {
-
-            startVideo("http://videocdn.bodybuilding.com/video/mp4/62000/62792m.mp4");
-        });
+        //set burglary video from phone
+        mButtonPlay.setOnClickListener(v -> startVideo("http://videocdn.bodybuilding.com/video/mp4/62000/62792m.mp4"));
     }
 
     private void injectTempImageEvents() {
-
+        //get set burglary images
         mEventsImages.add(R.drawable.burgler_image);
         mEventsImages.add(R.drawable.burgler_image_2);
         mEventsImages.add(R.drawable.burgler_image_3);
@@ -76,17 +72,12 @@ public class ShowEventActivity extends AppCompatActivity {
     }
 
     private void startVideo(String URL) {
-
         MediaController mediaController = new MediaController(this);
         mediaController.setAnchorView(mVideoView);
         mVideoView.setMediaController(mediaController);
 
         String path = "android.resource://" + getPackageName() + "/" + R.raw.burgler_video;
         mVideoView.setVideoURI(Uri.parse(path));
-
-        // TODO: uncomment and pass the correct event URL video to function
-        //mVideoView.setVideoPath(URL);
-
         mVideoView.start();
     }
 }

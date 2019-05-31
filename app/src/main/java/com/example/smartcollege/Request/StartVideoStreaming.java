@@ -12,7 +12,6 @@ import com.example.smartcollege.UpdateSubject;
 import com.example.smartcollege.VideoSessionDetails;
 import com.google.gson.Gson;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +19,7 @@ public class StartVideoStreaming implements UpdateSubject, Runnable{
     private final String VIDEO_PROTOCOL="RTMP";
     private String encodingAuth;
     private SharedPreferences prefs;
-    private Map<DevicesIdsEnum,List<String>> deviceParams = new HashMap<>();
+    private Map<DevicesIdsEnum,List<String>> deviceParams;
     private DevicesStatus devicesStatus;
     public StartVideoStreaming(Map<DevicesIdsEnum,List<String>> deviceParams, String encodingAuth, SharedPreferences prefs) {
         this.deviceParams = deviceParams;

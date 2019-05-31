@@ -15,12 +15,10 @@ import java.util.ArrayList;
 
 public class EventsImageRecyclerViewAdapter extends RecyclerView.Adapter<EventsImageRecyclerViewAdapter.ViewHolder>{
 
-    // TODO: change to Strings so we pass URL to Gllide image
     private ArrayList<Integer> mImages;
     private Context mContext;
-
+    //adapter that help to see the devices in DashboardActivity
     public EventsImageRecyclerViewAdapter(ArrayList<Integer> Images, Context Context) {
-
         this.mImages = Images;
         this.mContext = Context;
     }
@@ -28,7 +26,6 @@ public class EventsImageRecyclerViewAdapter extends RecyclerView.Adapter<EventsI
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.events_images_view_item, viewGroup, false);
 
         return new ViewHolder(view);
@@ -36,7 +33,7 @@ public class EventsImageRecyclerViewAdapter extends RecyclerView.Adapter<EventsI
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-
+        //set the images in activity
         Glide.with(mContext)
                 .load(mImages.get(i))
                 .into(viewHolder.eventImage);
@@ -48,7 +45,6 @@ public class EventsImageRecyclerViewAdapter extends RecyclerView.Adapter<EventsI
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-
         ImageView eventImage;
 
         public ViewHolder(@NonNull View itemView) {

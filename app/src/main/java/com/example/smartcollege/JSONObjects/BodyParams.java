@@ -14,7 +14,7 @@ public abstract class BodyParams {
             params.get(key).add(value);
         }
         else{
-            params.put(key,new ArrayList<String>());
+            params.put(key,new ArrayList<>());
             params.get(key).add(value);
         }
     }

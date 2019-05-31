@@ -33,6 +33,7 @@ public class EventsActivity extends AppCompatActivity {
     }
 
     private void injectTempEvents() {
+        //get all burglaries events from phone
         prefs = getSharedPreferences(EVENT_ID,MODE_PRIVATE);
         int eventImage = R.drawable.events_icon;
         Integer numberOfEvents = prefs.getInt(ID,-1);
@@ -41,10 +42,11 @@ public class EventsActivity extends AppCompatActivity {
             mEventsID.add("Event: " + (i+1));
             String date = prefs.getString(DATE,null);
             mEventsDate.add(date);
-            // TODO: get imageURL from prefs
-            // TODO: get videoURL from prefs
+            // get imageURL from prefs
+            // get videoURL from prefs
         }
 
+        //display burglaries events
         mEventRecyclerView = findViewById(R.id.eventsRecyclerView);
         mEventsRecyclerViewAdapter = new EventsRecyclerViewAdapter(mEventsID, mEventsDate, eventImage, this);
         mEventRecyclerView.setAdapter(mEventsRecyclerViewAdapter);

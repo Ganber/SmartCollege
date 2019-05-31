@@ -24,6 +24,7 @@ public class EventsRecyclerViewAdapter extends RecyclerView.Adapter<EventsRecycl
     private int mImages;
     private Context mContext;
 
+    //adapter that help to see the events
     public EventsRecyclerViewAdapter(ArrayList<String> mIDs, ArrayList<String> mDates, int mImages, Context mContext) {
         this.mIDs = mIDs;
         this.mDates = mDates;
@@ -34,32 +35,24 @@ public class EventsRecyclerViewAdapter extends RecyclerView.Adapter<EventsRecycl
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.events_recycler_view_item, viewGroup, false);
-
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-
+        //set burglar's images in EventsActivity
         viewHolder.eventDate.setText(mDates.get(i));
         viewHolder.eventID.setText(mIDs.get(i));
-
         Glide.with(mContext)
                 .load(mImages)
                 .into(viewHolder.eventImage);
 
-        viewHolder.parentLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(mContext, ShowEventActivity.class);
-
-                intent.putExtra("ID", mIDs.get(i));
-                intent.putExtra("Date", mDates.get(i));
-
-                mContext.startActivity(intent);
-            }
+        viewHolder.parentLayout.setOnClickListener(v -> {
+            Intent intent = new Intent(mContext, ShowEventActivity.class);
+            intent.putExtra("ID", mIDs.get(i));
+            intent.putExtra("Date", mDates.get(i));
+            mContext.startActivity(intent);
         });
     }
 

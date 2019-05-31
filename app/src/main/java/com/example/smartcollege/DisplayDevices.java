@@ -1,5 +1,7 @@
 package com.example.smartcollege;
 
+import android.util.Log;
+
 public class DisplayDevices implements Runnable {
     private final int tenSecondsInMili = 10000;
     private Runnable listener;
@@ -10,13 +12,14 @@ public class DisplayDevices implements Runnable {
 
     @Override
     public void run() {
+        //refresh every 10 seconds the status on the devices in dashboard activity
         while(!stop){
             try{
                 listener.run();
                 Thread.sleep(tenSecondsInMili);
             }
             catch (Exception e){
-
+                Log.d("DisplayDevices","Error during refresh operation");
             }
         }
     }

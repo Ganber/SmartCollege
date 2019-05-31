@@ -3,7 +3,6 @@ package com.example.smartcollege.Request;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.example.smartcollege.DevicesStatus;
 import com.example.smartcollege.Enum.AmdocsMethodsEnum;
 import com.example.smartcollege.Enum.DevicesIdsEnum;
 import com.example.smartcollege.REST.DevicesRequest;
@@ -13,16 +12,13 @@ import com.example.smartcollege.VideoSessionDetails;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-class StartVideoRecording implements UpdateSubject, Runnable {
-    private final String VIDEO_PROTOCOL = "RTMP";
+class StartVideoRecording implements UpdateSubject {
     private String encodingAuth;
     private SharedPreferences prefs;
-    private Map<DevicesIdsEnum, List<String>> deviceParams = new HashMap<>();
-    private DevicesStatus devicesStatus;
+    private Map<DevicesIdsEnum, List<String>> deviceParams;
     private VideoSessionDetails videoSession;
 
     public StartVideoRecording(VideoSessionDetails videoSessionDetails, Map<DevicesIdsEnum, List<String>> deviceParams, String encodingAuth, SharedPreferences prefs) {
@@ -54,11 +50,5 @@ class StartVideoRecording implements UpdateSubject, Runnable {
         }
 
         new StopVideoRecording(videoSession, response.getRecordId(), deviceParams, encodingAuth, prefs);
-    }
-
-    @Override
-    public void run() {
-
-
     }
 }

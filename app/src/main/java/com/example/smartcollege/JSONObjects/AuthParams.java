@@ -1,7 +1,5 @@
 package com.example.smartcollege.JSONObjects;
 
-import java.util.HashMap;
-
 public class AuthParams extends BodyParams{
 
     public AuthParams(String username, String password) {

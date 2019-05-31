@@ -12,7 +12,6 @@ import com.example.smartcollege.JSONObjects.BodyRequest;
 import com.example.smartcollege.JSONObjects.DeviceParams;
 import com.example.smartcollege.REST.DevicesRequest;
 import com.example.smartcollege.REST.RestRequests;
-import com.example.smartcollege.Response.DeviceResponse;
 import com.example.smartcollege.Response.GetImageSnapshotsResponse;
 import com.example.smartcollege.UpdateSubject;
 import com.google.gson.Gson;
@@ -57,8 +56,8 @@ public class GetImageSnapshots implements UpdateSubject {
         try {
             String s = response.getUrl().replace("https://","http://");
             URL url = new URL(s);
-
             BitmapDecoder.decodeSnapshot(url,200,200,encodingAuth);
+            //save photos in phone
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }

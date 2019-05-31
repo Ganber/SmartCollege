@@ -8,7 +8,7 @@ public enum DevicesIdsEnum {
 
     private int deviceId;
 
-    private DevicesIdsEnum(int deviceId){
+    DevicesIdsEnum(int deviceId){
         this.deviceId=deviceId;
     }
 

@@ -25,7 +25,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private ArrayList<String> mType;
     private ArrayList<String> mIsActive;
     private Context mContext;
-
+    //adapter that help to see list of devices in DashboardActivity
     public RecyclerViewAdapter(ArrayList<String> mNames, ArrayList<Integer> mImages, ArrayList<Long> mIDs, ArrayList<String> mStatus, ArrayList<String> mRoom, ArrayList<String> mType, ArrayList<String> mIsActive, Context mContext) {
         this.mNames = mNames;
         this.mImages = mImages;
@@ -47,11 +47,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-
-//        Glide.with(mContext)
-//                .asBitmap()
-//                .load(mImages.get(i))
-//                .into(viewHolder.image);
+        //set the images in activity
         Glide.with(mContext)
                 .load(mImages.get(i))
                 .into(viewHolder.image);
