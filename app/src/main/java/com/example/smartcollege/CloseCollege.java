@@ -15,11 +15,13 @@ public class CloseCollege implements Runnable{
     private String encodingAuth;
     private SharedPreferences prefs;
     private DevicesStatus devicesStatus;
+    private Runnable listener;
 
-    public CloseCollege(Map<DevicesIdsEnum,List<String>> devices, String encodingAuth, SharedPreferences prefs){
+    public CloseCollege(Map<DevicesIdsEnum,List<String>> devices, String encodingAuth, SharedPreferences prefs, Runnable listener){
         this.devices = devices;
         this.encodingAuth = encodingAuth;
         this.prefs = prefs;
+        this.listener=listener;
         exec();
     }
 
@@ -38,6 +40,7 @@ public class CloseCollege implements Runnable{
             }
             //save current devices status in phone
             prefs.edit().putStringSet("Devices",devicesToSave).apply();
+            listener.run();
         }
     }
 }

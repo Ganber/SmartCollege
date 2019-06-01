@@ -193,7 +193,7 @@ public class DashboardActivity extends Activity implements Runnable {
         Map<DevicesIdsEnum,List<String>> devices = new HashMap();
         setDeviceMapParams(devices,DevicesIdsEnum.MotionSensor,DevicesIdsEnum.WindowContact);
         //save current devices status
-        new CloseCollege(devices,encodingAuth,prefs);
+        new CloseCollege(devices,encodingAuth,prefs,() -> new Thread(this).start());
         mSystemTriggered = true;
 
         mImageViewSystemStatus.setImageResource(R.drawable.check_mark_symbol);
@@ -201,7 +201,7 @@ public class DashboardActivity extends Activity implements Runnable {
 
         Toast.makeText(this, "System has been triggered", Toast.LENGTH_SHORT).show();
         //check every 10 seconds if the status was changed and alert it
-        new Thread(this).start();
+
     }
 
     private void showDeviceDetails(){
@@ -254,11 +254,9 @@ public class DashboardActivity extends Activity implements Runnable {
         prefs.edit().remove("Devices").apply();
         Map<Integer,String> deviceSavedStatus = new HashMap<>();
 
-        if (devicesToFollow != null) {
-            for(String savedDevice : devicesToFollow){
-                String[] splitArray = savedDevice.split(":");
-                deviceSavedStatus.put(Integer.parseInt(splitArray[0]),splitArray[1]);
-            }
+        for(String savedDevice : devicesToFollow) {
+            String[] splitArray = savedDevice.split(":");
+            deviceSavedStatus.put(Integer.parseInt(splitArray[0]), splitArray[1]);
         }
         //get current device status and check if the status was changed
         while (mSystemTriggered){
