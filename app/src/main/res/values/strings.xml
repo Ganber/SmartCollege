@@ -20,4 +20,7 @@
     <string name="todo">TODO</string>
     <string name="open_College">Open College</string>
     <string name="play">Play</string>
+    <string name="system_status">[STATUS]</string>
+    <string name="smart_college_security_is">Smart college security is:</string>
+    <string name="not_triggered">NOT TRIGGERED</string>
 </resources>

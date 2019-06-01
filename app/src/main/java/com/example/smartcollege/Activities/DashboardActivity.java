@@ -16,6 +16,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.smartcollege.CloseCollege;
@@ -44,7 +46,7 @@ public class DashboardActivity extends Activity implements Runnable {
     private final String CHANNEL_ID = "YOUR_CHANNEL_ID";
     private final String CHANNEL_NAME = "YOUR_CHANNEL_NAME";
     private final String CHANNEL_DESCRIPTION = "YOUR_NOTIFICATION_CHANNEL_DESCRIPTION";
-    private boolean systemTriggered = false;
+    private boolean mSystemTriggered = false;
     private String TOKEN;
     private String encodingAuth;
     private Button mDemoButton;
@@ -53,6 +55,10 @@ public class DashboardActivity extends Activity implements Runnable {
     private Intent intent;
     private DevicesStatus devicesStatus;
     private DisplayDevices displayDevices;
+
+    // System status variables
+    private ImageView mImageViewSystemStatus;
+    private TextView mTextViewSystemStatus;
 
     // RecyclerView
     private RecyclerView mRecyclerView;
@@ -70,7 +76,7 @@ public class DashboardActivity extends Activity implements Runnable {
         super.onCreate(savedInstanceState);
         SharedPreferences prefs = getSharedPreferences(EVENT_ID,MODE_PRIVATE);
         //check if there any events on phone
-        Integer amountOfHistoryEvents = prefs.getInt(ID,-1);
+        int amountOfHistoryEvents = prefs.getInt(ID,-1);
         if(amountOfHistoryEvents == -1){
             prefs.edit().putInt(ID,0).apply();
         }
@@ -80,6 +86,10 @@ public class DashboardActivity extends Activity implements Runnable {
         mCloseCollege = findViewById(R.id.button_close_college);
         mEvents = findViewById(R.id.button_events);
         mRecyclerView = findViewById(R.id.recyclerView);
+
+        mImageViewSystemStatus = findViewById(R.id.imageViewSystemStatus);
+        mTextViewSystemStatus = findViewById(R.id.textViewSystemStatus);
+
         //set that main thread can do GET requests
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -115,7 +125,11 @@ public class DashboardActivity extends Activity implements Runnable {
 
     private View.OnClickListener openCollegeClick(){
         return v -> {
-            systemTriggered = false;
+            mSystemTriggered = false;
+
+            mImageViewSystemStatus.setImageResource(R.drawable.x_mark_symbopl);
+            mTextViewSystemStatus.setText("NOT TRIGGERED");
+
             mCloseCollege.setOnClickListener(closeCollegeClick());
             mCloseCollege.setText(R.string.close_college);
             Toast.makeText(this, "System is not triggered", Toast.LENGTH_SHORT).show();
@@ -158,7 +172,9 @@ public class DashboardActivity extends Activity implements Runnable {
                     CHANNEL_NAME,
                     NotificationManager.IMPORTANCE_DEFAULT);
             channel.setDescription(CHANNEL_DESCRIPTION);
-            mNotificationManager.createNotificationChannel(channel);
+            if (mNotificationManager != null) {
+                mNotificationManager.createNotificationChannel(channel);
+            }
         }
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_stat_ac_unit) // notification icon
@@ -168,7 +184,9 @@ public class DashboardActivity extends Activity implements Runnable {
         Intent intent = new Intent(getApplicationContext(), EventsActivity.class);
         PendingIntent pi = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         mBuilder.setContentIntent(pi);
-        mNotificationManager.notify(0, mBuilder.build());
+        if (mNotificationManager != null) {
+            mNotificationManager.notify(0, mBuilder.build());
+        }
     }
 
     private void closeCollege(SharedPreferences prefs){
@@ -176,7 +194,11 @@ public class DashboardActivity extends Activity implements Runnable {
         setDeviceMapParams(devices,DevicesIdsEnum.MotionSensor,DevicesIdsEnum.WindowContact);
         //save current devices status
         new CloseCollege(devices,encodingAuth,prefs);
-        systemTriggered = true;
+        mSystemTriggered = true;
+
+        mImageViewSystemStatus.setImageResource(R.drawable.check_mark_symbol);
+        mTextViewSystemStatus.setText("TRIGGERED");
+
         Toast.makeText(this, "System has been triggered", Toast.LENGTH_SHORT).show();
         //check every 10 seconds if the status was changed and alert it
         new Thread(this).start();
@@ -231,12 +253,15 @@ public class DashboardActivity extends Activity implements Runnable {
         prefs = getSharedPreferences(CLOSE_COLLEGE,MODE_PRIVATE);
         prefs.edit().remove("Devices").apply();
         Map<Integer,String> deviceSavedStatus = new HashMap<>();
-        for(String savedDevice : devicesToFollow){
-            String[] splitArray = savedDevice.split(":");
-            deviceSavedStatus.put(Integer.parseInt(splitArray[0]),splitArray[1]);
+
+        if (devicesToFollow != null) {
+            for(String savedDevice : devicesToFollow){
+                String[] splitArray = savedDevice.split(":");
+                deviceSavedStatus.put(Integer.parseInt(splitArray[0]),splitArray[1]);
+            }
         }
         //get current device status and check if the status was changed
-        while (systemTriggered){
+        while (mSystemTriggered){
             for (Map.Entry<Integer, String> entry : deviceSavedStatus.entrySet()) {
                 Map<DevicesIdsEnum,List<String>> devices = new HashMap();
                 setDeviceMapParams(devices,DevicesIdsEnum.findDeviceIdEnum(entry.getKey()));
